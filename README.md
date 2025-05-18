@@ -1,6 +1,6 @@
-# Docker Containers Repository
+# Self-Hosted Docker Services
 
-This repository contains Docker Compose configurations and environment files for various services managed through Dokploy.
+This repository contains multiple Docker-based services, each organized into its own directory with its respective configuration and environment files.
 
 ## Structure
 
