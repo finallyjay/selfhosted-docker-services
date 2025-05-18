@@ -2,39 +2,45 @@
 
 This repository contains multiple Docker-based services, each organized into its own directory with its respective configuration and environment files.
 
-## Structure
+## 📁 Repository Structure
 
-Each service is located in its own subdirectory with its respective `docker-compose.yml` and example environment files (`.env.example`).
+Each subdirectory represents a self-contained service and includes:
 
-Currently included services:
+- `docker-compose.yml`: The service definition.
+- `.env.example`: Example environment variables.
+- `README.md`: (Optional) Service-specific documentation.
 
-- ArchiSteamFarm
-- (Other services you add here)
+```
+.
+├── service1/
+│   ├── docker-compose.yml
+│   └── .env.example
+├── another-service/
+│   └── ...
+```
 
-## How to Use
+## 🚀 Deployment via Dokploy
 
-1. **Choose the service directory** you want to deploy.
+We use [Dokploy](https://dokploy.com) (self-hosted version) for managing deployments in a homelab server / cloud VPS.
 
-2. **Configure environment variables:**
-   - Use `.env.example` to add environment variables in Dokploy service
+### GitHub Integration
 
-3. **Deploy with Dokploy:**
-   - Point Dokploy to the service directory.
-   - Dokploy will use the `docker-compose.yml` found there to manage the service lifecycle.
+Dokploy is integrated directly with GitHub. It listens for `push` events on the `main` branch and uses **watch paths** to trigger deploys **only when relevant files change**.
 
-4. **Networking:**
-   - Some services require external Docker networks.
-   - Make sure to create these networks before deployment.
+### ✅ Deployment Flow
 
-## Best Practices
+1. **Push to `main`** from GitHub.
+2. Dokploy checks the service's configured **watch path** (e.g. `service1/**`).
+3. If the changed files match the path, the service is automatically deployed.
+4. Each service has its own deployment config and isolated runtime environment.
 
-- One repository with subdirectories per service allows centralized management.
-- In the future, services can be split into separate repositories if needed, with this repo serving as an index.
+### 💡 Example Watch Path
 
-## Contributions
+To deploy `service1` only when its files change:
 
-Feel free to open issues or pull requests to improve configurations or add new services.
+```
+Watch path: service1/**
+Trigger: on push (branch: main)
+```
 
----
-
-If you have any questions or need help setting up a service, don't hesitate to ask!
+Feel free to contribute improvements or add new services.
