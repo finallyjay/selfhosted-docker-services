@@ -16,8 +16,7 @@ Currently included services:
 1. **Choose the service directory** you want to deploy.
 
 2. **Configure environment variables:**
-   - Copy `.env.example` to `.env`
-   - Edit `.env` with your specific values.
+   - Use `.env.example` to add environment variables in Dokploy service
 
 3. **Deploy with Dokploy:**
    - Point Dokploy to the service directory.
