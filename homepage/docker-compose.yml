@@ -11,7 +11,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOMEPAGE_DATA}/config:/app/config
     environment:
-      - HOMEPAGE_ALLOWED_HOSTS: "homepage.tuckfow.com"
+      - HOMEPAGE_ALLOWED_HOSTS="homepage.tuckfow.com"
 
   homepage-cloudflare_tunnel:
     image: cloudflare/cloudflared
