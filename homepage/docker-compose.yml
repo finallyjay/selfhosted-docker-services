@@ -1,0 +1,29 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage
+    container_name: homepage
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+      - homepage-cf-tunnel
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOMEPAGE_DATA}/config:/app/config
+
+  homepage-cloudflare_tunnel:
+    image: cloudflare/cloudflared
+    container_name: homepage-cloudflare_tunnel
+    restart: unless-stopped
+    command: tunnel run
+    networks:
+      - dokploy-network
+      - homepage-cf-tunnel
+    environment: 
+      - TUNNEL_TOKEN=${HOMEPAGE_CLOUDFLARE_TUNNEL_TOKEN}
+
+networks:
+  dokploy-network:
+    external: true
+  homepage-cf-tunnel:
+    external: true
