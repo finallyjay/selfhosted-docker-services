@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  archisteamfarm:
+    image: justarchi/archisteamfarm
+    container_name: archisteamfarm
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - dokploy-network
+      - archisteamfarm-cf-tunnel
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${ARCHISTEAMFARM_DATA}/config:/app/config
+      - ${ARCHISTEAMFARM_DATA}/logs:/app/logs
+    labels:
+      - homepage.group=Bots
+      - homepage.name=ArchiSteamFarm
+      - homepage.icon=archisteamfarm.png
+      - homepage.href=https://${ARCHISTEAMFARM_LOCAL_DOMAIN}
+      - homepage.description=Steam bots management
+
+  archisteamfarm-cf-tunnel:
+    image: cloudflare/cloudflared
+    container_name: archisteamfarm-cf-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    networks:
+      - dokploy-network
+      - archisteamfarm-cf-tunnel
+    environment: 
+      - TUNNEL_TOKEN=${ARCHISTEAMFARM_CLOUDFLARE_TUNNEL_TOKEN}
+
+networks:
+  dokploy-network:
+    external: true
+
+  archisteamfarm-cf-tunnel:
+    external: true
