@@ -12,8 +12,8 @@ This directory contains the configuration to deploy ArchiSteamFarm along with it
 
 To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
 
-- `ARCHISTEAMFARM_DATA`: local path where ArchiSteamFarm configuration and logs are stored.
-- `ARCHISTEAMFARM_LOCAL_DOMAIN`: local domain or URL to access the ArchiSteamFarm web interface.
+- `ARCHISTEAMFARM_DATA`: Local path where ArchiSteamFarm configuration and logs are stored.
+- `ARCHISTEAMFARM_LOCAL_DOMAIN`: Local domain or URL to access the ArchiSteamFarm web interface.
 - `ARCHISTEAMFARM_CLOUDFLARE_TUNNEL_TOKEN`: Cloudflare tunnel token to enable secure remote access.
 
 ## Docker Networks
