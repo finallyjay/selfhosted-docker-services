@@ -6,7 +6,7 @@ This directory contains the configuration to deploy ArchiSteamFarm along with it
 
 - `docker-compose.yml`: configuration to launch the containers.
 - `.env.example`: example of the necessary environment variables.
-- Persistent ArchiSteamFarm data at `${ARCHISTEAMFARM_DATA}` (config and logs directories right now).
+- Persistent ArchiSteamFarm data at `${ARCHISTEAMFARM_DATA}` (config and logs).
 
 ## Environment Variables
 
