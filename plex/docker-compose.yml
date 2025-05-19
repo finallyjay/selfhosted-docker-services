@@ -1,0 +1,55 @@
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    hostname: tuckfow-home
+    privileged: true
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - ADVERTISE_IP=http://${PLEX_LOCAL_IP}:32400/
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - VERSION=docker
+    ports:
+      - "32400:32400/tcp"
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32469:32469/tcp"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    volumes:
+      - ${PLEX_DATA}/data/config:/config
+      - ${PLEX_MOUNTED_DATA}/movies:/movies:ro
+      - ${PLEX_MOUNTED_DATA}/music:/music:ro
+      - ${PLEX_MOUNTED_DATA}/music-papa:/music-papa:ro
+      - ${PLEX_MOUNTED_DATA}/tv-series:/tv-series:ro
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.plex-web.addprefix.prefix=/web
+      - traefik.http.middlewares.plex-headers.headers.customrequestheaders.Connection=Upgrade
+      - traefik.http.routers.plex.entrypoints=https
+      - traefik.http.routers.plex.rule=Host(`${PLEX_LOCAL_DOMAIN}`)
+      - traefik.http.routers.plex.tls=true
+      - traefik.http.routers.plex.service=plex
+      - traefik.http.routers.plex.middlewares=plex-web
+      - traefik.http.routers.plex.middlewares=plex-headers
+      - traefik.http.services.plex.loadbalancer.server.port=32400
+      - traefik.docker.network=traefik-internal
+      - homepage.group=Media
+      - homepage.name=Plex
+      - homepage.icon=plex.png
+      - homepage.href=https://${PLEX_LOCAL_DOMAIN}
+      - homepage.description=Media server to organize audio and video
+
+networks:
+  dokploy-network:
+    external: true
