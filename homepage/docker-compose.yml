@@ -15,7 +15,7 @@ services:
 
   homepage-cloudflare_tunnel:
     image: cloudflare/cloudflared
-    container_name: homepage-cloudflare_tunnel
+    container_name: homepage-cf-tunnel
     restart: unless-stopped
     command: tunnel run
     networks:
