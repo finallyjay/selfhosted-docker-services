@@ -59,7 +59,7 @@ services:
       - MARIADB_PASSWORD=${SPEEDTEST_MYSQL_PASSWORD}
       - MARIADB_RANDOM_ROOT_PASSWORD=true
     volumes:
-      - ${SPEEDTEST_DATA}/data/mysql/:/var/lib/mysql
+      - ${SPEEDTEST_DATA}/mysql/:/var/lib/mysql
 
   speedtest-cloudflare_tunnel:
     image: cloudflare/cloudflared
