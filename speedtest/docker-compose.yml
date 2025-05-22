@@ -4,11 +4,8 @@ services:
     container_name: speedtest
     hostname: speedtest
     restart: unless-stopped
-#    depends_on:
-#      - speedtest-db
     networks:
       - dokploy-network
-#      - speedtest-db
       - speedtest-cf-tunnel
     environment:
       - PUID=1000
@@ -45,22 +42,6 @@ services:
       - homepage.widget.type=speedtest
       - homepage.widget.url=http://speedtest
 
-#  speedtest-db:
-#    image: mariadb
-#    container_name: speedtest-db
-#    restart: unless-stopped
-#    networks:
-#      - speedtest-db
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - MARIADB_DATABASE=${SPEEDTEST_MYSQL_DB}
-#      - MARIADB_USER=${SPEEDTEST_MYSQL_USERNAME}
-#      - MARIADB_PASSWORD=${SPEEDTEST_MYSQL_PASSWORD}
-#      - MARIADB_RANDOM_ROOT_PASSWORD=true
-#    volumes:
-#      - ${SPEEDTEST_DATA}/mysql/:/var/lib/mysql
-
   speedtest-cloudflare_tunnel:
     image: cloudflare/cloudflared
     container_name: speedtest-cf-tunnel
@@ -76,8 +57,5 @@ networks:
   dokploy-network:
     external: true
 
-#  speedtest-db:
-#    external: true
-  
   speedtest-cf-tunnel:
     external: true
