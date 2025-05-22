@@ -8,8 +8,8 @@ services:
       - speedtest-db
     networks:
       - dokploy-network
-      - db
-      - cloudflare_tunnel
+      - speedtest-db
+      - speedtest-cf-tunnel
     environment:
       - PUID=1000
       - PGID=1000
@@ -50,7 +50,7 @@ services:
     container_name: speedtest-db
     restart: unless-stopped
     networks:
-      - db
+      - speedtest-db
     environment:
       - PUID=1000
       - PGID=1000
@@ -76,7 +76,7 @@ networks:
   dokploy-network:
     external: true
 
-  db:
+  speedtest-db:
     external: true
   
   speedtest-cf-tunnel:
