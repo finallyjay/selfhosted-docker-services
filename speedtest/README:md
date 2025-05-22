@@ -1,0 +1,34 @@
+# Speedtest Docker Deployment
+
+This directory contains the configuration to deploy the Speedtest server using Docker Compose.
+
+## Structure
+
+- `docker-compose.yml`: Configuration to launch the containers.
+- `.env.example`: Example of the necessary environment variables.
+- Persistent data at `${SPEEDTEST_DATA}` (configuration files).
+
+## Environment Variables
+
+To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+
+- `SPEEDTEST_DATA`: Local path where Speedtest service data is located.
+- `SPEEDTEST_LOCAL_DOMAIN`: Local domain or URL to access the Speedtest web interface.
+- `SPEEDTEST_CLOUDFLARE_TUNNEL_TOKEN`: Cloudflare tunnel token to enable secure remote access.
+
+## Docker Networks
+
+Two external Docker networks must exist on the Docker host before starting the containers:
+- `dokploy-network`
+- `speedtest-cf-tunnel`
+
+To create the tunnel network (adjust as needed):
+
+```bash
+docker network create \
+  --driver ipvlan \
+  --subnet 12.0.0.0/29 \
+  --ip-range 12.0.0.0/29 \
+  --internal \
+  speedtest-cf-tunnel
+```
