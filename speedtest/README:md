@@ -31,13 +31,5 @@ docker network create \
   --subnet 12.0.0.0/29 \
   --ip-range 12.0.0.0/29 \
   --internal \
-  speedtest-db
-```
-```bash
-docker network create \
-  --driver ipvlan \
-  --subnet 13.0.0.0/29 \
-  --ip-range 13.0.0.0/29 \
-  --internal \
   speedtest-cf-tunnel
 ```
