@@ -56,6 +56,5 @@ services:
 networks:
   dokploy-network:
     external: true
-
   speedtest-cf-tunnel:
     external: true
