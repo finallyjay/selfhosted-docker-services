@@ -5,7 +5,7 @@ services:
     hostname: speedtest
     restart: unless-stopped
     depends_on:
-      - database
+      - speedtest-db
     networks:
       - dokploy-network
       - speedtest-db
@@ -45,7 +45,7 @@ services:
       - homepage.widget.type=speedtest
       - homepage.widget.url=http://speedtest
 
-  database:
+  speedtest-db:
     image: mariadb
     container_name: speedtest-db
     restart: unless-stopped
@@ -63,7 +63,7 @@ services:
 
   speedtest-cloudflare_tunnel:
     image: cloudflare/cloudflared
-    container_name: speedtest-cloudflare_tunnel
+    container_name: speedtest-cf-tunnel
     restart: unless-stopped
     command: tunnel run
     networks:
