@@ -1,0 +1,83 @@
+services:
+  speedtest:
+    image: lscr.io/linuxserver/speedtest-tracker
+    container_name: speedtest
+    hostname: speedtest
+    restart: unless-stopped
+    depends_on:
+      - speedtest-db
+    networks:
+      - dokploy-network
+      - db
+      - cloudflare_tunnel
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_CONNECTION=mysql
+      - DB_HOST=speedtest-db
+      - DB_PORT=3306
+      - APP_NAME=Tuckfow Speedtest tracker
+      - APP_KEY=${SPEEDTEST_APP_KEY}
+      - APP_TIMEZONE=Europe/Madrid
+      - DISPLAY_TIMEZONE=Europe/Madrid
+      - PUBLIC_DASHBOARD=true
+      - DB_DATABASE=${SPEEDTEST_MYSQL_DB}
+      - DB_USERNAME=${SPEEDTEST_MYSQL_USERNAME}
+      - DB_PASSWORD=${SPEEDTEST_MYSQL_PASSWORD}
+      - SPEEDTEST_SCHEDULE="*/5 * * * *"
+      - PRUNE_RESULTS_OLDER_THAN=90
+    volumes:
+      - ${SPEEDTEST_DATA}/speedtest/config:/config
+      - ${SPEEDTEST_DATA}/speedtest/web:/etc/ssl/web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.speedtest.entrypoints=https
+      - traefik.http.routers.speedtest.rule=Host(`${SPEEDTEST_LOCAL_DOMAIN}`)
+      - traefik.http.routers.speedtest.tls=true
+      - traefik.http.routers.speedtest.service=speedtest
+      - traefik.http.services.speedtest.loadbalancer.server.port=80
+      - traefik.docker.network=dokploy-network
+      - homepage.group=Monitoring / Stats
+      - homepage.name=Speedtest
+      - homepage.icon=librespeed.png
+      - homepage.href=https://${SPEEDTEST_LOCAL_DOMAIN}
+      - homepage.description=Speedtest tracker
+      - homepage.widget.type=speedtest
+      - homepage.widget.url=http://speedtest
+
+  speedtest-db:
+    image: mariadb
+    container_name: speedtest-db
+    restart: unless-stopped
+    networks:
+      - db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MARIADB_DATABASE=${SPEEDTEST_MYSQL_DB}
+      - MARIADB_USER=${SPEEDTEST_MYSQL_USERNAME}
+      - MARIADB_PASSWORD=${SPEEDTEST_MYSQL_PASSWORD}
+      - MARIADB_RANDOM_ROOT_PASSWORD=true
+    volumes:
+      - ${SPEEDTEST_DATA}/data/mysql/:/var/lib/mysql
+
+  speedtest-cloudflare_tunnel:
+    image: cloudflare/cloudflared
+    container_name: speedtest-cloudflare_tunnel
+    restart: unless-stopped
+    command: tunnel run
+    networks:
+      - dokploy-network
+      - speedtest-cf-tunnel
+    environment: 
+      - TUNNEL_TOKEN=${SPEEDTEST_CLOUDFLARE_TUNNEL_TOKEN}
+
+networks:
+  dokploy-network:
+    external: true
+
+  db:
+    external: true
+  
+  speedtest-cf-tunnel:
+    external: true
