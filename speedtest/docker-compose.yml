@@ -31,7 +31,7 @@ services:
       - ${SPEEDTEST_DATA}/speedtest/web:/etc/ssl/web
     labels:
       - traefik.enable=true
-      - traefik.http.routers.speedtest.entrypoints=https
+      - traefik.http.routers.speedtest.entrypoints=web
       - traefik.http.routers.speedtest.rule=Host(`${SPEEDTEST_LOCAL_DOMAIN}`)
       - traefik.http.routers.speedtest.tls=true
       - traefik.http.routers.speedtest.service=speedtest
