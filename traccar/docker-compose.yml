@@ -1,0 +1,16 @@
+services:
+  traccar:
+    image: traccar/traccar
+    ports:
+      - 25002:5013
+      - 25003:5023
+    volumes:
+      - ${TRACCAR_DATA}/traccar/logs:/opt/traccar/logs
+      - ${TRACCAR_DATA}/traccar/templates:/opt/traccar/templates
+      - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
