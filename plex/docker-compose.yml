@@ -3,6 +3,7 @@ services:
     image: linuxserver/plex:latest
     container_name: plex
     hostname: tuckfow-home
+    restart: unless-stopped
     privileged: true
     devices:
       - /dev/dri:/dev/dri
@@ -29,10 +30,10 @@ services:
       - ${PLEX_MOUNTED_DATA}/music:/music:ro
       - ${PLEX_MOUNTED_DATA}/music-papa:/music-papa:ro
       - ${PLEX_MOUNTED_DATA}/tv-series:/tv-series:ro
-    restart: unless-stopped
     networks:
       - dokploy-network      
     labels:
+      - com.centurylinklabs.watchtower.enable=true
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
       - traefik.http.middlewares.plex-web.addprefix.prefix=/web
