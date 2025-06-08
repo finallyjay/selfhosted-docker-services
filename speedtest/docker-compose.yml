@@ -27,6 +27,7 @@ services:
       - ${SPEEDTEST_DATA}/speedtest/config:/config
       - ${SPEEDTEST_DATA}/speedtest/web:/etc/ssl/web
     labels:
+      - com.centurylinklabs.watchtower.enable=true
       - traefik.enable=true
       - traefik.http.routers.speedtest.entrypoints=web
       - traefik.http.routers.speedtest.rule=Host(`${SPEEDTEST_LOCAL_DOMAIN}`)
