@@ -21,7 +21,7 @@ Each subdirectory represents a self-contained service and includes:
 
 ## 🚀 Deployment via Dokploy
 
-We use [Dokploy](https://dokploy.com) (self-hosted version) for managing deployments in a homelab server / cloud VPS.
+Use [Dokploy](https://dokploy.com) to manage service deployments in a homelab server / cloud VPS.
 
 ### GitHub Integration
 
