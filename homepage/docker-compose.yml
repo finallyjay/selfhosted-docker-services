@@ -10,6 +10,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOMEPAGE_DATA}/config:/app/config
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
 
@@ -21,7 +23,7 @@ services:
     networks:
       - dokploy-network
       - homepage-cf-tunnel
-    environment: 
+    environment:
       - TUNNEL_TOKEN=${HOMEPAGE_CLOUDFLARE_TUNNEL_TOKEN}
 
 networks:
