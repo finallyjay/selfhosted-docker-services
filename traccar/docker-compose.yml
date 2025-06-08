@@ -10,6 +10,8 @@ services:
       - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
     networks:
       - dokploy-network
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   dokploy-network:
