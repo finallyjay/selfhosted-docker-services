@@ -13,6 +13,7 @@ services:
       - ${ARCHISTEAMFARM_DATA}/config:/app/config
       - ${ARCHISTEAMFARM_DATA}/logs:/app/logs
     labels:
+      - com.centurylinklabs.watchtower.enable=true
       - homepage.group=Bots
       - homepage.name=ArchiSteamFarm
       - homepage.icon=archisteamfarm.png
