@@ -1,6 +1,6 @@
 services:
   archisteamfarm:
-    image: justarchi/archisteamfarm
+    image: justarchi/archisteamfarm:latest
     container_name: archisteamfarm
     restart: unless-stopped
     security_opt:
