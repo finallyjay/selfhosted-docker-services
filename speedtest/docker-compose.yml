@@ -1,6 +1,6 @@
 services:
   speedtest:
-    image: lscr.io/linuxserver/speedtest-tracker
+    image: lscr.io/linuxserver/speedtest-tracker:latest
     container_name: speedtest
     hostname: speedtest
     restart: unless-stopped
