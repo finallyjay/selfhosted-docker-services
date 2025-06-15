@@ -1,6 +1,6 @@
 services:
   traccar:
-    image: traccar/traccar:latest
+    image: traccar/traccar:ubuntu
     ports:
       - 25002:5013
       - 25003:5023
