@@ -8,6 +8,7 @@ services:
       - ${TRACCAR_DATA}/traccar/logs:/opt/traccar/logs
       - ${TRACCAR_DATA}/traccar/templates:/opt/traccar/templates
       - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
+      - ${TRACCAR_DATA}/traccar/data:/opt/traccar/data/:rw
     networks:
       - dokploy-network
     labels:
