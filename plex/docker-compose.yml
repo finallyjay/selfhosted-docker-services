@@ -25,7 +25,7 @@ services:
       - "32413:32413/udp"
       - "32414:32414/udp"
     volumes:
-      - ${PLEX_DATA}/data/config:/config
+      - ${PLEX_DATA}/config:/config
       - ${PLEX_MOUNTED_DATA}/movies:/movies:ro
       - ${PLEX_MOUNTED_DATA}/music:/music:ro
       - ${PLEX_MOUNTED_DATA}/music-papa:/music-papa:ro
