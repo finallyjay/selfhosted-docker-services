@@ -18,7 +18,7 @@ To use this setup you need to define the following variables in a `.env` file (o
 
 ## Docker Networks
 
-Two external Docker networks must exist on the Docker host before starting the containers:
+Three external Docker networks must exist on the Docker host before starting the containers:
 - `dokploy-network`
 - `speedtest-db`
 - `speedtest-cf-tunnel`
@@ -28,8 +28,8 @@ To create the tunnel network (adjust as needed):
 ```bash
 docker network create \
   --driver ipvlan \
-  --subnet 12.0.0.0/29 \
-  --ip-range 12.0.0.0/29 \
+  --subnet 13.0.0.0/29 \
+  --ip-range 13.0.0.0/29 \
   --internal \
   speedtest-cf-tunnel
 ```
