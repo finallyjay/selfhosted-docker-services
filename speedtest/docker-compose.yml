@@ -28,13 +28,6 @@ services:
       - ${SPEEDTEST_DATA}/speedtest/web:/etc/ssl/web
     labels:
       - com.centurylinklabs.watchtower.enable=true
-      - traefik.enable=true
-      - traefik.http.routers.speedtest.entrypoints=web
-      - traefik.http.routers.speedtest.rule=Host(`${SPEEDTEST_LOCAL_DOMAIN}`)
-      - traefik.http.routers.speedtest.tls=true
-      - traefik.http.routers.speedtest.service=speedtest
-      - traefik.http.services.speedtest.loadbalancer.server.port=80
-      - traefik.docker.network=dokploy-network
       - homepage.group=Monitoring / Stats
       - homepage.name=Speedtest
       - homepage.icon=librespeed.png
