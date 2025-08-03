@@ -14,6 +14,8 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
+      PUID: $PUID
+      PGID: $PGID
 
   homepage-cloudflare_tunnel:
     image: cloudflare/cloudflared
