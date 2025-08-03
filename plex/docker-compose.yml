@@ -34,18 +34,6 @@ services:
       - dokploy-network      
     labels:
       - com.centurylinklabs.watchtower.enable=true
-      - traefik.enable=true
-      - traefik.docker.network=dokploy-network
-      - traefik.http.middlewares.plex-web.addprefix.prefix=/web
-      - traefik.http.middlewares.plex-headers.headers.customrequestheaders.Connection=Upgrade
-      - traefik.http.routers.plex.entrypoints=websecure
-      - traefik.http.routers.plex.rule=Host(`${PLEX_LOCAL_DOMAIN}`)
-      - traefik.http.routers.plex.tls=true
-      - traefik.http.services.plex.tls.certresolver=letsencrypt
-      - traefik.http.routers.plex.service=plex
-      - traefik.http.routers.plex.middlewares=plex-web
-      - traefik.http.routers.plex.middlewares=plex-headers
-      - traefik.http.services.plex.loadbalancer.server.port=32400
       - homepage.group=Media
       - homepage.name=Plex
       - homepage.icon=plex.png
