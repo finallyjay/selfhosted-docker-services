@@ -21,7 +21,7 @@ services:
       - homepage.description=Steam bots management
 
   archisteamfarm-cf-tunnel:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:latest
     container_name: archisteamfarm-cf-tunnel
     restart: unless-stopped
     command: tunnel run
@@ -30,6 +30,8 @@ services:
       - archisteamfarm-cf-tunnel
     environment: 
       - TUNNEL_TOKEN=${ARCHISTEAMFARM_CLOUDFLARE_TUNNEL_TOKEN}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   dokploy-network:
