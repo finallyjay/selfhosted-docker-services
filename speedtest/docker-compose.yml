@@ -37,7 +37,7 @@ services:
       - homepage.widget.url=http://speedtest
 
   speedtest-cloudflare_tunnel:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:latest
     container_name: speedtest-cf-tunnel
     restart: unless-stopped
     command: tunnel run
@@ -46,6 +46,8 @@ services:
       - speedtest-cf-tunnel
     environment: 
       - TUNNEL_TOKEN=${SPEEDTEST_CLOUDFLARE_TUNNEL_TOKEN}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   dokploy-network:
