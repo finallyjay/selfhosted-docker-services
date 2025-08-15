@@ -32,18 +32,17 @@ services:
     restart: unless-stopped
 
   pihole-cf-tunnel:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:latest
     container_name: pihole-cf-tunnel
     restart: unless-stopped
     command: tunnel run
     networks:
       - dokploy-network
       - pihole-cf-tunnel
-    dns:
-      - 1.1.1.1
-      - 1.1.0.0
     environment: 
       - TUNNEL_TOKEN=${PIHOLE_CLOUDFLARE_TUNNEL_TOKEN}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   dokploy-network:
