@@ -21,7 +21,7 @@ services:
       - DB_DATABASE=${SPEEDTEST_MYSQL_DB}
       - DB_USERNAME=${SPEEDTEST_MYSQL_USERNAME}
       - DB_PASSWORD=${SPEEDTEST_MYSQL_PASSWORD}
-      - SPEEDTEST_SCHEDULE="*/15 * * * *"
+      - SPEEDTEST_SCHEDULE="0 * * * *"
       - PRUNE_RESULTS_OLDER_THAN=90
     volumes:
       - ${SPEEDTEST_DATA}/speedtest/config:/config
