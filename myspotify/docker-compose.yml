@@ -1,0 +1,68 @@
+services:
+  myspotify-backend:
+    container_name: myspotify-api
+    image: yooooomi/your_spotify_server
+    hostname: myspotify-api
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+      - myspotify-cf-tunnel
+    links:
+      - myspotify-mongo
+    depends_on:
+      - myspotify-mongo
+    environment:
+      API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
+      CLIENT_ENDPOINT: https://${MYSPOTIFY_DOMAIN}
+      MONGO_ENDPOINT: mongodb://myspotify-mongo:27017/your_spotify
+      SPOTIFY_PUBLIC: ${MYSPOTIFY_APP_PUBLIC}
+      SPOTIFY_SECRET: ${MYSPOTIFY_APP_SECRET}
+
+  myspotify-mongo:
+    container_name: myspotify-mongo
+    image: mongo:latest
+    hostname: myspotify-mongo
+    restart: unless-stopped
+    networks:
+      - myspotify-cf-tunnel
+    volumes:
+      - ${MYSPOTIFY_DATA}/mongo:/data/db
+
+  myspotify-frontend:
+    container_name: myspotify-frontend
+    image: yooooomi/your_spotify_client
+    hostname: myspotify-frontend
+    restart: unless-stopped
+    networks:
+      - dokploy-network
+      - myspotify-cf-tunnel
+    environment:
+      API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
+    labels:
+      - homepage.group=Monitoring / Stats
+      - homepage.name=My Spotify
+      - homepage.icon=spotify.png
+      - homepage.href=https://${MYSPOTIFY_DOMAIN}
+      - homepage.description=My Spotify stats
+
+  myspotify-cf-tunnel:
+    image: cloudflare/cloudflared
+    container_name: myspotify-cf-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    networks:
+      - dokploy-network
+      - myspotify-cf-tunnel
+    environment: 
+      - TUNNEL_TOKEN=${MYSPOTIFY_CLOUDFLARE_TUNNEL_TOKEN}
+
+networks:
+  dokploy-network:
+    external: true
+  myspotify-cf-tunnel:
+    internal: true
+    driver: ipvlan
+    ipam:
+      config:
+        - subnet: ${MYSPOTIFY_NETWORK_SUBNET}
+          ip_range: ${MYSPOTIFY_NETWORK_SUBNET}
