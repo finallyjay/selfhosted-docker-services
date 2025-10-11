@@ -10,8 +10,7 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     networks:
-      - dokploy-network
-      - pihole-cf-tunnel
+      - cloudflare-exposed
     environment:
       TZ: "Europe/Madrid"
       FTLCONF_dns_listeningMode: all
@@ -31,21 +30,6 @@ services:
       - SYS_NICE
     restart: unless-stopped
 
-  pihole-cf-tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: pihole-cf-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    networks:
-      - dokploy-network
-      - pihole-cf-tunnel
-    environment: 
-      - TUNNEL_TOKEN=${PIHOLE_CLOUDFLARE_TUNNEL_TOKEN}
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-
 networks:
-  dokploy-network:
-    external: true
-  pihole-cf-tunnel:
+  cloudflare-exposed:
     external: true

@@ -15,21 +15,11 @@ To use this setup you need to define the following variables in a `.env` file (o
 - `PIHOLE_DATA`: Local path where Pi-hole service data is located.
 - `PIHOLE_WEB_PASSWORD`: Password to access the Pi-hole web interface.
 - `PIHOLE_LOCAL_DOMAIN`: Local domain or URL to access the Pi-hole web interface.
-- `PIHOLE_CLOUDFLARE_TUNNEL_TOKEN`: Cloudflare tunnel token to enable secure remote access.
 
 ## Docker Networks
 
-Two external Docker networks must exist on the Docker host before starting the containers:
-- `dokploy-network`
-- `pihole-cf-tunnel`
+The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
 
-To create the tunnel network (adjust as needed):
+**Networks used:**
 
-```bash
-docker network create \
-  --driver ipvlan \
-  --subnet 12.0.0.0/29 \
-  --ip-range 12.0.0.0/29 \
-  --internal \
-  pihole-cf-tunnel
-```
+- `cloudflare-exposed` (internal)
