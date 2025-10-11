@@ -8,6 +8,9 @@ services:
       - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
     networks:
       - cloudflare-exposed
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
 
 networks:
   cloudflare-exposed:
