@@ -5,8 +5,7 @@ services:
     hostname: myspotify-api
     restart: unless-stopped
     networks:
-      - dokploy-network
-      - myspotify-cf-tunnel
+      - cloudflare-exposed
     links:
       - myspotify-mongo
     depends_on:
@@ -24,7 +23,7 @@ services:
     hostname: myspotify-mongo
     restart: unless-stopped
     networks:
-      - myspotify-cf-tunnel
+      - cloudflare-exposed
     volumes:
       - ${MYSPOTIFY_DATA}/mongo:/data/db
 
@@ -34,8 +33,7 @@ services:
     hostname: myspotify-frontend
     restart: unless-stopped
     networks:
-      - dokploy-network
-      - myspotify-cf-tunnel
+      - cloudflare-exposed
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
     labels:
@@ -45,24 +43,6 @@ services:
       - homepage.href=https://${MYSPOTIFY_DOMAIN}
       - homepage.description=My Spotify stats
 
-  myspotify-cf-tunnel:
-    image: cloudflare/cloudflared
-    container_name: myspotify-cf-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    networks:
-      - dokploy-network
-      - myspotify-cf-tunnel
-    environment: 
-      - TUNNEL_TOKEN=${MYSPOTIFY_CLOUDFLARE_TUNNEL_TOKEN}
-
 networks:
-  dokploy-network:
+  cloudflare-exposed:
     external: true
-  myspotify-cf-tunnel:
-    internal: true
-    driver: ipvlan
-    ipam:
-      config:
-        - subnet: ${MYSPOTIFY_NETWORK_SUBNET}
-          ip_range: ${MYSPOTIFY_NETWORK_SUBNET}
