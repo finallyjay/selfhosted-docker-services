@@ -12,6 +12,8 @@ services:
       - 1.1.1.1
       - 1.0.0.1
     dns_search: .
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   cloudflare-exposed:
