@@ -18,8 +18,3 @@ To use this setup you need to define the following variables in a `.env` file (o
 - `PLEX_DATA`: Local path where Plex configuration is stored.
 - `PLEX_MOUNTED_DATA`: Local path where Plex media is mounted or stored.
 - `PLEX_LOCAL_DOMAIN`: Local domain or URL to access the Plex web interface.
-
-## Docker Networks
-
-Two external Docker networks must exist on the Docker host before starting the containers:
-- `dokploy-network`

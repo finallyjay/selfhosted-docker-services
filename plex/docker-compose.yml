@@ -30,8 +30,6 @@ services:
       - ${PLEX_MOUNTED_DATA}/music:/music:ro
       - ${PLEX_MOUNTED_DATA}/music-papa:/music-papa:ro
       - ${PLEX_MOUNTED_DATA}/tv-series:/tv-series:ro
-    networks:
-      - dokploy-network      
     labels:
       - com.centurylinklabs.watchtower.enable=true
       - homepage.group=Media
@@ -39,7 +37,3 @@ services:
       - homepage.icon=plex.png
       - homepage.href=https://${PLEX_LOCAL_DOMAIN}
       - homepage.description=Media server to organize audio and video
-
-networks:
-  dokploy-network:
-    external: true
