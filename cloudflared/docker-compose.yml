@@ -9,7 +9,7 @@ services:
     networks:
       - cloudflare-exposed
 
-  networks:
-    cloudflare-exposed:
-      internal: true
-      driver: bridge
+networks:
+  cloudflare-exposed:
+    internal: true
+    driver: bridge
