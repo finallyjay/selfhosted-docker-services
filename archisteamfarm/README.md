@@ -17,7 +17,7 @@ Define the following variables in a `.env` file (or directly in Dokploy):
 
 ## Docker Networks
 
-The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows ArchiSteamFarm to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
+The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
 
 **Networks used:**
 
