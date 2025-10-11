@@ -13,3 +13,4 @@ networks:
   cloudflare-exposed:
     internal: true
     driver: bridge
+    name: cloudflare-exposed
