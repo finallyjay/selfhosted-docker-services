@@ -4,8 +4,7 @@ services:
     container_name: homepage
     restart: unless-stopped
     networks:
-      - dokploy-network
-      - homepage-cf-tunnel
+      - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -17,21 +16,6 @@ services:
       PUID: $PUID
       PGID: $PGID
 
-  homepage-cloudflare_tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: homepage-cf-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    networks:
-      - dokploy-network
-      - homepage-cf-tunnel
-    environment:
-      - TUNNEL_TOKEN=${HOMEPAGE_CLOUDFLARE_TUNNEL_TOKEN}
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-
 networks:
-  dokploy-network:
-    external: true
-  homepage-cf-tunnel:
+  cloudflare-exposed:
     external: true

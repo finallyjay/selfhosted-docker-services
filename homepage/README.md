@@ -14,22 +14,11 @@ To use this setup you need to define the following variables in a `.env` file (o
 
 - `HOMEPAGE_DATA`: Local path where Homepage configuration is stored.
 - `HOMEPAGE_LOCAL_DOMAIN`: Local domain or URL to access the Homepage web interface.
-- `HOMEPAGE_CLOUDFLARE_TUNNEL_TOKEN`: Cloudflare Tunnel token to enable secure remote access.
 
 ## Docker Networks
 
-Two external Docker networks must exist on the Docker host before starting the containers:
+The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
 
-- `dokploy-network`
-- `homepage-cf-tunnel`
+**Networks used:**
 
-To create the tunnel network with the appropriate subnet (`10.0.0.0/29`), run:
-
-```bash
-docker network create \
-  --driver ipvlan \
-  --subnet 10.0.0.0/29 \
-  --ip-range 10.0.0.0/29 \
-  --internal \
-  homepage-cf-tunnel
-```
+- `cloudflare-exposed` (internal)
