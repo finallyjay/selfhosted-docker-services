@@ -14,22 +14,11 @@ To use this setup you need to define the following variables in a `.env` file (o
 
 - `SPEEDTEST_DATA`: Local path where Speedtest service data is located.
 - `SPEEDTEST_LOCAL_DOMAIN`: Local domain or URL to access the Speedtest web interface.
-- `SPEEDTEST_CLOUDFLARE_TUNNEL_TOKEN`: Cloudflare tunnel token to enable secure remote access.
 
 ## Docker Networks
 
-Three external Docker networks must exist on the Docker host before starting the containers:
-- `dokploy-network`
-- `speedtest-db`
-- `speedtest-cf-tunnel`
+The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
 
-To create the tunnel network (adjust as needed):
+**Networks used:**
 
-```bash
-docker network create \
-  --driver ipvlan \
-  --subnet 13.0.0.0/29 \
-  --ip-range 13.0.0.0/29 \
-  --internal \
-  speedtest-cf-tunnel
-```
+- `cloudflare-exposed` (internal)
