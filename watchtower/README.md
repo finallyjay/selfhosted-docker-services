@@ -14,8 +14,3 @@ To use this setup you need to define the following variables in a `.env` file (o
 - `WATCHTOWER_HOSTNAME`: Hostname for the instance that is running Watchtower.
 - `WATCHTOWER_TELEGRAM_BOT_TOKEN`: Telegram bot token used for notifications.
 - `WATCHTOWER_TELEGRAM_CHAT_ID`: Telegram chat ID used by the telegram bot for notifications.
-
-## Docker Networks
-
-These Docker networks must exist on the Docker host before starting the containers:
-- `dokploy-network`
