@@ -6,8 +6,7 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - dokploy-network
-      - archisteamfarm-cf-tunnel
+      - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${ARCHISTEAMFARM_DATA}/config:/app/config
@@ -20,22 +19,6 @@ services:
       - homepage.href=https://${ARCHISTEAMFARM_LOCAL_DOMAIN}
       - homepage.description=Steam bots management
 
-  archisteamfarm-cf-tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: archisteamfarm-cf-tunnel
-    restart: unless-stopped
-    command: tunnel run
-    networks:
-      - dokploy-network
-      - archisteamfarm-cf-tunnel
-    environment: 
-      - TUNNEL_TOKEN=${ARCHISTEAMFARM_CLOUDFLARE_TUNNEL_TOKEN}
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-
 networks:
-  dokploy-network:
-    external: true
-
-  archisteamfarm-cf-tunnel:
-    external: true
+  cloudflare-exposed:
+    internal: true
