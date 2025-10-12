@@ -39,7 +39,7 @@ services:
 
 networks:
   cloudflare-exposed:
-    internal: true
+    external: true
 ```
 
 ## Notes
