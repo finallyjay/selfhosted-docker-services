@@ -1,6 +1,6 @@
 services:
   traccar:
-    image: traccar/traccar:6.10
+    image: traccar/traccar:latest
     ports:
       - 25002:5013
       - 25003:5023
