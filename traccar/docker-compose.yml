@@ -1,12 +1,11 @@
 services:
   traccar:
-    image: traccar/traccar:latest
+    image: traccar/traccar:6.10
     ports:
       - 25002:5013
       - 25003:5023
     volumes:
       - ${TRACCAR_DATA}/traccar/logs:/opt/traccar/logs
-#      - ${TRACCAR_DATA}/traccar/templates:/opt/traccar/templates
       - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
       - ${TRACCAR_DATA}/traccar/data:/opt/traccar/data/:rw
     networks:
