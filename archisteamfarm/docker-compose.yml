@@ -10,7 +10,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${ARCHISTEAMFARM_DATA}/config:/app/config
-      - ${ARCHISTEAMFARM_DATA}/config:/app/plugins
+      - ${ARCHISTEAMFARM_DATA}/plugins:/app/plugins
       - ${ARCHISTEAMFARM_DATA}/logs:/app/logs
     labels:
       - com.centurylinklabs.watchtower.enable=true
