@@ -16,6 +16,8 @@ services:
       MONGO_ENDPOINT: mongodb://myspotify-mongo:27017/your_spotify
       SPOTIFY_PUBLIC: ${MYSPOTIFY_APP_PUBLIC}
       SPOTIFY_SECRET: ${MYSPOTIFY_APP_SECRET}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
   myspotify-mongo:
     container_name: myspotify-mongo
@@ -26,6 +28,8 @@ services:
       - cloudflare-exposed
     volumes:
       - ${MYSPOTIFY_DATA}/mongo:/data/db
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
   myspotify-frontend:
     container_name: myspotify-frontend
@@ -37,6 +41,7 @@ services:
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
     labels:
+      - com.centurylinklabs.watchtower.enable=true
       - homepage.group=Monitoring / Stats
       - homepage.name=My Spotify
       - homepage.icon=spotify.png
