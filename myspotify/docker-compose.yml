@@ -1,52 +1,78 @@
 services:
   myspotify-backend:
+    image: yooooomi/your_spotify_server:latest
     container_name: myspotify-api
-    image: yooooomi/your_spotify_server
     hostname: myspotify-api
     restart: unless-stopped
+    depends_on:
+      myspotify-mongo:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
     networks:
       - cloudflare-exposed
-    links:
-      - myspotify-mongo
-    depends_on:
-      - myspotify-mongo
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
       CLIENT_ENDPOINT: https://${MYSPOTIFY_DOMAIN}
       MONGO_ENDPOINT: mongodb://myspotify-mongo:27017/your_spotify
       SPOTIFY_PUBLIC: ${MYSPOTIFY_APP_PUBLIC}
       SPOTIFY_SECRET: ${MYSPOTIFY_APP_SECRET}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
   myspotify-mongo:
+    image: mongo:8
     container_name: myspotify-mongo
-    image: mongo:latest
     hostname: myspotify-mongo
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: mongosh --eval 'db.runCommand("ping").ok' --quiet || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     networks:
       - cloudflare-exposed
     volumes:
       - ${MYSPOTIFY_DATA}/mongo:/data/db
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
   myspotify-frontend:
+    image: yooooomi/your_spotify_client:latest
     container_name: myspotify-frontend
-    image: yooooomi/your_spotify_client
     hostname: myspotify-frontend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     networks:
       - cloudflare-exposed
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
-      - homepage.group=Monitoring / Stats
+      - homepage.group=Media
       - homepage.name=My Spotify
       - homepage.icon=spotify.png
       - homepage.href=https://${MYSPOTIFY_DOMAIN}
-      - homepage.description=My Spotify stats
+      - homepage.description=Spotify listening history and stats
 
 networks:
   cloudflare-exposed:
