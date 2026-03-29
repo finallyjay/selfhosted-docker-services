@@ -1,34 +1,47 @@
 services:
   pihole:
-    container_name: pihole
     image: pihole/pihole:latest
+    container_name: pihole
     hostname: tuckfow-home
-    dns:
-      - 1.1.1.1
-      - 1.1.0.0
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-    networks:
-      - cloudflare-exposed
-    environment:
-      TZ: "Europe/Madrid"
-      FTLCONF_dns_listeningMode: all
-      FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD}
-    volumes:
-      - ${PIHOLE_DATA}/etc/pihole:/etc/pihole
-      - ${PIHOLE_DATA}/etc/dnsmasq.d:/etc/dnsmasq.d
-    labels:
-      - homepage.group=Management
-      - homepage.name=Pi-hole (main)
-      - homepage.icon=pi-hole.png
-      - homepage.href=https://${PIHOLE_LOCAL_DOMAIN}
-      - homepage.description=DNS, DHCP management
+    restart: unless-stopped
     cap_add:
       - NET_ADMIN
       - SYS_TIME
       - SYS_NICE
-    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    dns:
+      - 1.1.1.1
+      - 1.1.0.0
+    healthcheck:
+      test: dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - cloudflare-exposed
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - ${PIHOLE_DATA}/etc/pihole:/etc/pihole
+      - ${PIHOLE_DATA}/etc/dnsmasq.d:/etc/dnsmasq.d
+    environment:
+      TZ: "Europe/Madrid"
+      FTLCONF_dns_listeningMode: all
+      FTLCONF_webserver_api_password: ${PIHOLE_WEB_PASSWORD}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Network
+      - homepage.name=Pi-hole (main)
+      - homepage.icon=pi-hole.png
+      - homepage.href=https://${PIHOLE_LOCAL_DOMAIN}
+      - homepage.description=DNS and ad blocking
 
 networks:
   cloudflare-exposed:
