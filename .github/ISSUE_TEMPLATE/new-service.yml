@@ -1,0 +1,47 @@
+name: New Service Request
+description: Suggest a new self-hosted service to add
+labels: ["enhancement", "new-service"]
+body:
+  - type: input
+    id: service-name
+    attributes:
+      label: Service Name
+      placeholder: e.g., Grafana, Jellyfin, Vaultwarden
+    validations:
+      required: true
+  - type: input
+    id: project-url
+    attributes:
+      label: Project URL
+      description: Link to the official project or Docker image
+      placeholder: https://github.com/...
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this service do and why should it be added?
+      placeholder: Describe the service and its use case
+    validations:
+      required: true
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network Exposure
+      description: Does this service need to be exposed via Cloudflare Tunnel?
+      options:
+        - "Yes - needs external access"
+        - "No - internal only"
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: >-
+        Any extra details, such as required volumes,
+        environment variables, or dependencies
+      placeholder: Optional
+    validations:
+      required: false
