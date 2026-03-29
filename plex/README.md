@@ -1,20 +1,21 @@
-# Plex Docker Deployment
+# Plex
 
-This directory contains the configuration to deploy the Plex server using Docker Compose.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the containers.
-- `.env.example`: Example of the necessary environment variables.
-- Persistent Plex data at `${PLEX_DATA}` (configuration files).
-- Mounted Plex data at `${PLEX_MOUNTED_DATA}` (configuration files).
+Deploys [Plex Media Server](https://www.plex.tv/) for
+organizing and streaming movies, TV shows and music.
+Uses GPU hardware transcoding via `/dev/dri`.
 
 ## Environment Variables
 
-To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+| Variable            | Description                            |
+|---------------------|----------------------------------------|
+| `PLEX_DATA`         | Local path for Plex configuration      |
+| `PLEX_MOUNTED_DATA` | Local path where media files are stored|
+| `PLEX_LOCAL_IP`     | Local IP of the server running Plex    |
+| `PLEX_CLAIM`        | Plex claim token for registration      |
+| `PLEX_LOCAL_DOMAIN` | Domain to access the web interface     |
 
-- `PLEX_LOCAL_IP`: Plex local IP of the server which Plex is located.
-- `PLEX_CLAIM`: Plex claim value for this server.
-- `PLEX_DATA`: Local path where Plex configuration is stored.
-- `PLEX_MOUNTED_DATA`: Local path where Plex media is mounted or stored.
-- `PLEX_LOCAL_DOMAIN`: Local domain or URL to access the Plex web interface.
+## Notes
+
+- Media volumes are mounted as read-only.
+- GPU access (`/dev/dri`) is required for hardware
+  transcoding.
