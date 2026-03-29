@@ -1,20 +1,22 @@
-# Traccar Docker Deployment
+# Traccar
 
-This directory contains the configuration to deploy the Traccar server using Docker Compose.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the containers.
-- `.env.example`: Example of the necessary environment variables.
-- Persistent data at `${TRACCAR_DATA}` (configuration files).
+Deploys [Traccar](https://www.traccar.org/) GPS tracking
+server. Supports multiple tracking protocols on configurable
+ports.
 
 ## Environment Variables
 
-To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+| Variable       | Description                              |
+|----------------|------------------------------------------|
+| `TRACCAR_DATA` | Local path for logs, configuration, data |
 
-- `TRACCAR_DATA`: Local path where Traccar service data is located.
+## Networks
 
-## Docker Networks
+Connects to `dokploy-network` (external, managed by Dokploy).
 
-Two external Docker networks must exist on the Docker host before starting the containers:
-- `dokploy-network`
+## Notes
+
+- `traccar.xml` is mounted as read-only — edit it on the
+  host before starting the container.
+- Default ports: `25002` (mapped to 5013) and
+  `25003` (mapped to 5023).
