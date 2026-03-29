@@ -1,24 +1,19 @@
-# Homepage Docker Deployment
+# Homepage
 
-This directory contains the configuration to deploy the Homepage application along with its Cloudflare tunnel using Docker Compose.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the containers.
-- `.env.example`: Example of the necessary environment variables.
-- Persistent Homepage data at `${HOMEPAGE_DATA}` (configuration files).
+Deploys [Homepage](https://gethomepage.dev/) as a central
+dashboard for all services. Discovers containers automatically
+via Docker socket labels.
 
 ## Environment Variables
 
-To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+| Variable                 | Description                       |
+|--------------------------|-----------------------------------|
+| `HOMEPAGE_DATA`          | Local path for configuration files|
+| `HOMEPAGE_ALLOWED_HOSTS` | Allowed hostnames for access      |
+| `PUID`                   | User ID for file permissions      |
+| `PGID`                   | Group ID for file permissions     |
 
-- `HOMEPAGE_DATA`: Local path where Homepage configuration is stored.
-- `HOMEPAGE_LOCAL_DOMAIN`: Local domain or URL to access the Homepage web interface.
+## Networks
 
-## Docker Networks
-
-The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
-
-**Networks used:**
-
-- `cloudflare-exposed` (internal)
+Connects to `cloudflare-exposed`
+(must be created by the `cloudflared` service first).
