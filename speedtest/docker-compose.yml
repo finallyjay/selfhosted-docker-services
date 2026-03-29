@@ -4,19 +4,18 @@ services:
     container_name: speedtest
     hostname: speedtest
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: curl -f http://localhost:80 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     networks:
       - cloudflare-exposed
     volumes:
       - ${SPEEDTEST_DATA}/speedtest/config:/config
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-      - homepage.group=Monitoring / Stats
-      - homepage.name=Speedtest
-      - homepage.icon=librespeed.png
-      - homepage.href=https://${SPEEDTEST_LOCAL_DOMAIN}
-      - homepage.description=Speedtest tracker
-      - homepage.widget.type=speedtest
-      - homepage.widget.url=http://speedtest
     environment:
       - PUID=1000
       - PGID=1000
@@ -30,6 +29,20 @@ services:
       - SPEEDTEST_SCHEDULE="0 * * * *"
       - PRUNE_RESULTS_OLDER_THAN=90
       - TELEGRAM_BOT_TOKEN=${SPEEDTEST_TELEGRAM_BOT_TOKEN}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - homepage.group=Network
+      - homepage.name=Speedtest
+      - homepage.icon=speedtest-tracker.png
+      - homepage.href=https://${SPEEDTEST_LOCAL_DOMAIN}
+      - homepage.description=Internet speed monitoring
+      - homepage.widget.type=speedtest
+      - homepage.widget.url=http://speedtest
 
 networks:
   cloudflare-exposed:
