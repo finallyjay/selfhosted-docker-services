@@ -38,7 +38,7 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - homepage.group=Network
       - homepage.name=Speedtest
-      - homepage.icon=speedtest-tracker.png
+      - homepage.icon=ookla-speedtest.png
       - homepage.href=https://${SPEEDTEST_LOCAL_DOMAIN}
       - homepage.description=Internet speed monitoring
       - homepage.widget.type=speedtest
