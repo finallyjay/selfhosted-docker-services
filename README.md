@@ -1,46 +1,57 @@
 # Self-Hosted Docker Services
 
-This repository contains multiple Docker-based services, each organized into its own directory with its respective configuration and environment files.
+![License](https://img.shields.io/github/license/finallyjay/selfhosted-docker-services)
+![GitHub last commit](https://img.shields.io/github/last-commit/finallyjay/selfhosted-docker-services)
 
-## 📁 Repository Structure
+A collection of self-hosted services running as independent
+Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 
-Each subdirectory represents a self-contained service and includes:
+## Services
 
-- `docker-compose.yml`: The service definition.
-- `.env.example`: Example environment variables.
-- `README.md`: (Optional) Service-specific documentation.
+| Service | Description |
+| --- | --- |
+| [ArchiSteamFarm](archisteamfarm/) | Steam account management |
+| [Cloudflared](cloudflared/) | Cloudflare Tunnel |
+| [Homepage](homepage/) | Dashboard and service portal |
+| [MySpotify](myspotify/) | Spotify listening statistics |
+| [Pi-hole](pihole/) | DNS and ad blocking |
+| [Plex](plex/) | Media server |
+| [Speedtest](speedtest/) | Internet speed tracking |
+| [Traccar](traccar/) | GPS tracking server |
+| [Watchtower](watchtower/) | Automatic container updates |
 
+## Prerequisites
+
+- Docker and Docker Compose
+- [Dokploy](https://dokploy.com) (optional, for automated deployments)
+
+## Getting Started
+
+1. Clone the repository.
+2. Navigate to the service directory you want to deploy.
+3. Copy `.env.example` to `.env` and fill in your values.
+4. Run `docker compose up -d`.
+
+> Each service is self-contained. You can deploy them independently
+> in any order, except that **cloudflared** should be running first
+> if the service connects to the `cloudflare-exposed` network.
+
+## Deployment via Dokploy
+
+Dokploy integrates with GitHub and watches the `main` branch.
+Each service is configured with a **watch path**
+(e.g., `pihole/**`) so that only the affected service
+is redeployed when its files change.
+
+## Repository Structure
+
+```text
+service-name/
+├── docker-compose.yml      # Service definition
+├── .env.example            # Required environment variables
+└── README.md               # Service-specific documentation
 ```
-.
-├── service1/
-│   ├── docker-compose.yml
-│   └── .env.example
-├── another-service/
-│   └── ...
-```
 
-## 🚀 Deployment via Dokploy
+## License
 
-Use [Dokploy](https://dokploy.com) to manage service deployments in a homelab server / cloud VPS.
-
-### GitHub Integration
-
-Dokploy is integrated directly with GitHub. It listens for `push` events on the `main` branch and uses **watch paths** to trigger deploys **only when relevant files change**.
-
-### ✅ Deployment Flow
-
-1. **Push to `main`** from GitHub.
-2. Dokploy checks the service's configured **watch path** (e.g. `service1/**`).
-3. If the changed files match the path, the service is automatically deployed.
-4. Each service has its own deployment config and isolated runtime environment.
-
-### 💡 Example Watch Path
-
-To deploy `service1` only when its files change:
-
-```
-Watch path: service1/**
-Trigger: on push (branch: main)
-```
-
-Feel free to contribute improvements or add new services.
+[MIT](LICENSE)
