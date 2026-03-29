@@ -1,16 +1,21 @@
-# Watchtower Docker Deployment
+# Watchtower
 
-This directory contains the configuration to deploy the Watchtower using Docker Compose.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the containers.
-- `.env.example`: Example of the necessary environment variables.
+Deploys [Watchtower](https://containrrr.dev/watchtower/) to
+automatically update Docker containers. Uses label-based
+opt-in — only containers with
+`com.centurylinklabs.watchtower.enable=true` are updated.
+Sends notifications via Telegram.
 
 ## Environment Variables
 
-To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+| Variable                       | Description                     |
+|--------------------------------|---------------------------------|
+| `WATCHTOWER_HOSTNAME`          | Hostname identifier             |
+| `WATCHTOWER_TELEGRAM_BOT_TOKEN`| Telegram bot token for alerts   |
+| `WATCHTOWER_TELEGRAM_CHAT_ID`  | Telegram chat ID for alerts     |
 
-- `WATCHTOWER_HOSTNAME`: Hostname for the instance that is running Watchtower.
-- `WATCHTOWER_TELEGRAM_BOT_TOKEN`: Telegram bot token used for notifications.
-- `WATCHTOWER_TELEGRAM_CHAT_ID`: Telegram chat ID used by the telegram bot for notifications.
+## Notes
+
+- Runs daily at 3:00 AM.
+- Old images are automatically cleaned up after updates.
+- Requires read-write access to the Docker socket.
