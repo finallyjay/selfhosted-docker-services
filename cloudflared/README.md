@@ -1,34 +1,34 @@
+# Cloudflared
 
+Runs a [Cloudflare Tunnel][tunnel-docs] to securely expose
+internal Docker services to the internet without opening
+ports on the host.
 
-# Cloudflare Tunnel for Docker
+This service creates the shared `cloudflare-exposed` bridge
+network. Any service that needs external access must join
+this network.
 
-This directory contains the configuration to create a secure Cloudflare Tunnel using [cloudflared](https://github.com/cloudflare/cloudflared), allowing you to expose internal Docker services to the internet via Cloudflare without opening ports on your local network.
+## How It Works
 
-## Purpose
-
-The goal is to run a cloudflared container that creates a tunnel and a shared internal Docker network. Any service you want to expose (e.g., speedtest, plex, etc.) must join this shared network to be accessible externally through Cloudflare.
-
-## How does it work?
-
-1. A cloudflared container starts the tunnel using your Cloudflare token.
-2. A single internal Docker network (`cloudflare-exposed`) is defined and shared by all exposed services.
-3. Any service you want to expose must be attached to this network.
-4. Cloudflare manages external access and security.
+1. The `cloudflared` container establishes a tunnel
+   using your Cloudflare token.
+2. The `cloudflare-exposed` Docker network is created
+   and shared across services.
+3. Services attached to this network become reachable
+   through Cloudflare.
+4. Routes and access policies are managed in the
+   [Cloudflare Zero Trust dashboard][zero-trust].
 
 ## Environment Variables
 
-- `CLOUDFLARE_TUNNEL_TOKEN`: Tunnel token generated in Cloudflare Zero Trust.
+| Variable                 | Description                            |
+|--------------------------|----------------------------------------|
+| `CLOUDFLARE_TUNNEL_TOKEN`| Tunnel token from Cloudflare Zero Trust|
 
-## Networks Used
+## Connecting a Service
 
-- A single shared internal network: `cloudflare-exposed` (internal).
-- An external network (if needed, in case of using Dokploy it's not needed to add it)
-
-## Usage Example
-
-To expose a service through the Cloudflare Tunnel, simply attach it to the shared internal network `cloudflare-exposed` in your service's configuration:
-
-## Example Configuration
+Add the `cloudflare-exposed` network to any service
+you want to expose:
 
 ```yaml
 services:
@@ -42,11 +42,11 @@ networks:
     external: true
 ```
 
-## Notes
-
-- All services to be exposed must be attached to the same shared tunnel network.
-- See the official documentation for advanced configuration and route management.
-
 ## Useful Resources
-- [Cloudflare Tunnel Docs](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/)
-- [cloudflared GitHub repository](https://github.com/cloudflare/cloudflared)
+
+- [Cloudflare Tunnel docs][tunnel-docs]
+- [cloudflared GitHub repository][cloudflared-repo]
+
+[tunnel-docs]: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
+[zero-trust]: https://one.dash.cloudflare.com/
+[cloudflared-repo]: https://github.com/cloudflare/cloudflared
