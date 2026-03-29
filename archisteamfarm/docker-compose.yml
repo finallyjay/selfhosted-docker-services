@@ -12,13 +12,18 @@ services:
       - ${ARCHISTEAMFARM_DATA}/config:/app/config
       - ${ARCHISTEAMFARM_DATA}/plugins:/app/plugins
       - ${ARCHISTEAMFARM_DATA}/logs:/app/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
-      - homepage.group=Bots
+      - homepage.group=Automation
       - homepage.name=ArchiSteamFarm
       - homepage.icon=archisteamfarm.png
       - homepage.href=https://${ARCHISTEAMFARM_LOCAL_DOMAIN}
-      - homepage.description=Steam bots management
+      - homepage.description=Steam card farming and account management
 
 networks:
   cloudflare-exposed:

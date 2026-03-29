@@ -1,24 +1,16 @@
-# ArchiSteamFarm Docker Deployment
+# ArchiSteamFarm
 
-This directory contains the configuration to deploy ArchiSteamFarm using Docker Compose, with secure remote access via Cloudflare Tunnel.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the container.
-- `.env.example`: Example of the necessary environment variables.
-- Persistent ArchiSteamFarm data at `${ARCHISTEAMFARM_DATA}` (config and logs).
+Deploys [ArchiSteamFarm](https://github.com/JustArchiNET/ArchiSteamFarm)
+for Steam account management and automated card farming.
 
 ## Environment Variables
 
-Define the following variables in a `.env` file (or directly in Dokploy):
+| Variable                       | Description                          |
+|--------------------------------|--------------------------------------|
+| `ARCHISTEAMFARM_DATA`          | Local path for config, plugins, logs |
+| `ARCHISTEAMFARM_LOCAL_DOMAIN`  | Domain to access the web interface   |
 
-- `ARCHISTEAMFARM_DATA`: Local path for ArchiSteamFarm configuration and logs.
-- `ARCHISTEAMFARM_LOCAL_DOMAIN`: Local domain or URL to access the ArchiSteamFarm web interface.
+## Networks
 
-## Docker Networks
-
-The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
-
-**Networks used:**
-
-- `cloudflare-exposed` (internal)
+Connects to `cloudflare-exposed`
+(must be created by the `cloudflared` service first).
