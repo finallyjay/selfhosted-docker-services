@@ -1,6 +1,12 @@
 services:
   traccar:
     image: traccar/traccar:latest
+    container_name: traccar
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - dokploy-network
     ports:
       - 25002:5013
       - 25003:5023
@@ -8,8 +14,11 @@ services:
       - ${TRACCAR_DATA}/traccar/logs:/opt/traccar/logs
       - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
       - ${TRACCAR_DATA}/traccar/data:/opt/traccar/data/:rw
-    networks:
-      - dokploy-network
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
