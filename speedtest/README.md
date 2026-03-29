@@ -1,27 +1,23 @@
-# Speedtest Docker Deployment
+# Speedtest
 
-This directory contains the configuration to deploy the Speedtest server using Docker Compose.
-
-## Structure
-
-- `docker-compose.yml`: Configuration to launch the containers.
-- `.env.example`: Example of the necessary environment variables.
-- Persistent data at `${SPEEDTEST_DATA}` (configuration files).
+Deploys [Speedtest Tracker][speedtest-tracker] to run scheduled
+internet speed tests and track results over time.
+Supports Telegram notifications.
 
 ## Environment Variables
 
-To use this setup you need to define the following variables in a `.env` file (or directly in Dokploy):
+| Variable                      | Description                       |
+|-------------------------------|-----------------------------------|
+| `SPEEDTEST_DATA`              | Local path for config and database|
+| `SPEEDTEST_LOCAL_DOMAIN`      | Domain to access the web interface|
+| `SPEEDTEST_DOMAIN`            | Public domain for the app URL     |
+| `SPEEDTEST_APP_KEY`           | Application secret key            |
+| `SPEEDTEST_APP_NAME`          | Display name for the application  |
+| `SPEEDTEST_TELEGRAM_BOT_TOKEN`| Telegram bot token for alerts     |
 
-- `SPEEDTEST_DATA`: Local path where Speedtest service data is located.
-- `SPEEDTEST_LOCAL_DOMAIN`: Local domain or URL to access the Speedtest web interface.
-- `SPEEDTEST_APP_NAME`: The name to display for the Speedtest application instance.
-- `SPEEDTEST_APP_KEY`: The secret key used for authenticating requests to the Speedtest server.
-- `SPEEDTEST_TELEGRAM_BOT_TOKEN`: The token for your Telegram bot to enable notifications or integrations.
+## Networks
 
-## Docker Networks
+Connects to `cloudflare-exposed`
+(must be created by the `cloudflared` service first).
 
-The internal Docker network `cloudflare-exposed` must exist on the Docker host before starting the container. This network allows the service to be exposed securely via Cloudflare Tunnel (see the `cloudflared` directory for tunnel setup).
-
-**Networks used:**
-
-- `cloudflare-exposed` (internal)
+[speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
