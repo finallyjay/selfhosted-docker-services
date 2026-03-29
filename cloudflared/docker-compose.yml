@@ -4,14 +4,27 @@ services:
     container_name: cloudflare-tunnel
     restart: unless-stopped
     command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-    networks:
-      - cloudflare-exposed
+    security_opt:
+      - no-new-privileges:true
     dns:
       - 1.1.1.1
       - 1.0.0.1
     dns_search: .
+    healthcheck:
+      test: cloudflared tunnel --no-autoupdate info --output json || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - cloudflare-exposed
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
 
