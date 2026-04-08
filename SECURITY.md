@@ -5,9 +5,8 @@
 If you discover a security vulnerability in this project,
 please report it responsibly.
 
-**Do not open a public issue.** Instead, contact the
-maintainer directly by email or through a
-[private security advisory](https://github.com/finallyjay/selfhosted-docker-services/security/advisories/new).
+**Do not open a public issue.** Instead, report it through
+a [private security advisory](https://github.com/finallyjay/selfhosted-docker-services/security/advisories/new).
 
 Please include:
 
