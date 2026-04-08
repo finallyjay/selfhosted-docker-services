@@ -19,8 +19,8 @@ services:
       - ${HOMEPAGE_DATA}/config:/app/config
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
-      PUID: $PUID
-      PGID: $PGID
+      PUID: 1000
+      PGID: 1000
     logging:
       driver: json-file
       options:
