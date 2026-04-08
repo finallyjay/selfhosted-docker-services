@@ -10,8 +10,6 @@ via Docker socket labels.
 |--------------------------|-----------------------------------|
 | `HOMEPAGE_DATA`          | Local path for configuration files|
 | `HOMEPAGE_ALLOWED_HOSTS` | Allowed hostnames for access      |
-| `PUID`                   | User ID for file permissions      |
-| `PGID`                   | Group ID for file permissions     |
 
 ## Networks
 
