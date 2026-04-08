@@ -23,13 +23,16 @@ Follow the standard property order:
 `networks` > `ports` > `volumes` > `environment` >
 `logging` > `labels`
 
-Every service must include:
+By default, every service should include:
 
 - `restart: unless-stopped`
 - `security_opt: no-new-privileges:true`
 - `logging` with json-file driver (10m max, 3 files)
 - Watchtower label: `com.centurylinklabs.watchtower.enable=true`
-- Homepage labels if the service has a web UI
+  for services that should be auto-updated
+  (infrastructure/management stacks may be excluded)
+- Homepage labels for services with a web UI
+  (recommended where applicable)
 
 ### .env.example
 
