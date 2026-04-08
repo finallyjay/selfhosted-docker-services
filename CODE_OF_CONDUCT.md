@@ -11,7 +11,7 @@ orientation.
 
 ## Our Standards
 
-Examples of behavior that contributes to a positive
+Examples of behavior that contribute to a positive
 environment:
 
 - Using welcoming and inclusive language
@@ -32,13 +32,13 @@ Examples of unacceptable behavior:
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable
-behavior may be reported by opening an issue or contacting
-the maintainer. All complaints will be reviewed and
-investigated and will result in a response that is deemed
-necessary and appropriate to the circumstances.
+behavior may be reported through a
+[private security advisory](https://github.com/finallyjay/selfhosted-docker-services/security/advisories/new).
+All complaints will be reviewed and investigated and will
+result in a response that is deemed necessary and
+appropriate to the circumstances.
 
 ## Attribution
 
-This Code of Conduct is adapted from the
-[Contributor Covenant](https://www.contributor-covenant.org),
-version 2.1.
+This Code of Conduct is inspired by the
+[Contributor Covenant](https://www.contributor-covenant.org).
