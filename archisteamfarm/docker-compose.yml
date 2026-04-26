@@ -5,12 +5,6 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    healthcheck:
-      test: pidof -q dotnet || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
     networks:
       - cloudflare-exposed
     volumes:
