@@ -12,7 +12,8 @@ ports.
 
 ## Networks
 
-Connects to `dokploy-network` (external, managed by Dokploy).
+No network is declared in the compose file — Dokploy
+attaches its own network automatically on deploy.
 
 ## Notes
 

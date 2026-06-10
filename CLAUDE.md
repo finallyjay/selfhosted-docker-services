@@ -34,8 +34,7 @@ exposure declare and connect to this network. Services
 that don't need Cloudflare exposure should **not** declare
 any network in their compose file — Dokploy attaches its
 own `dokploy-network` automatically on deploy (e.g. `n8n`,
-`plex`, `watchtower`). `traccar` predates this and still
-declares `dokploy-network` explicitly, which is redundant.
+`plex`, `traccar`, `watchtower`).
 
 **Container management:** Watchtower handles automatic
 image updates using label-based opt-in
