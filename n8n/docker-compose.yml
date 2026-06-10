@@ -1,0 +1,40 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    user: ${N8N_USER}
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${N8N_PORT}:5678"
+    volumes:
+      - ${N8N_DATA}/data:/data
+      - type: bind
+        source: ${N8N_BACKUPS_PATH}
+        target: /backups
+        bind:
+          propagation: rslave
+    environment:
+      HOME: /data
+      TZ: ${TZ}
+      GENERIC_TIMEZONE: ${TZ}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_HOST: ${N8N_HOST}
+      N8N_PORT: 5678
+      N8N_PROTOCOL: ${N8N_PROTOCOL}
+      N8N_SECURE_COOKIE: ${N8N_SECURE_COOKIE}
+      DB_SQLITE_POOL_SIZE: 5
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
+      NODE_FUNCTION_ALLOW_BUILTIN: fs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  dokploy-network:
+    external: true
