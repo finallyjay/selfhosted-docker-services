@@ -30,8 +30,12 @@ exactly.
 **Network model:** A single Cloudflare Tunnel
 (`cloudflared/`) creates and owns the `cloudflare-exposed`
 external bridge network. Services that need internet
-exposure connect to this network. Exception: `traccar`
-uses `dokploy-network`.
+exposure declare and connect to this network. Services
+that don't need Cloudflare exposure should **not** declare
+any network in their compose file — Dokploy attaches its
+own `dokploy-network` automatically on deploy (e.g. `n8n`,
+`plex`, `watchtower`). `traccar` predates this and still
+declares `dokploy-network` explicitly, which is redundant.
 
 **Container management:** Watchtower handles automatic
 image updates using label-based opt-in
