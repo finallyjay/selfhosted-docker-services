@@ -15,21 +15,22 @@ differing only in their environment variables:
 
 ## Environment Variables
 
-| Variable                 | Description                                              |
-|--------------------------|----------------------------------------------------------|
-| `N8N_DATA`               | Local path for persistent n8n data (mounted at `/data`)  |
-| `N8N_USER`               | `UID:GID` the container runs as; must own `${N8N_DATA}/data` and be able to write the backups folder |
-| `N8N_PORT`               | Host port mapped to the container's `5678`               |
-| `TZ`                     | Timezone (also used as `GENERIC_TIMEZONE`)               |
-| `N8N_HOST`               | Public hostname n8n serves on                            |
-| `N8N_PROTOCOL`           | `http` or `https` (used for URLs and cookies)            |
-| `N8N_SECURE_COOKIE`      | `true` when serving over HTTPS, `false` otherwise        |
-| `N8N_ENCRYPTION_KEY`     | Secret used to encrypt stored credentials                |
-| `N8N_BACKUPS_PATH`       | Host path bind-mounted at `/backups` (NFS automount on the minipc, local dir on a VPS) |
+| Variable             | Description                                             |
+|----------------------|---------------------------------------------------------|
+| `N8N_DATA`           | Local path for persistent n8n data (mounted at `/data`) |
+| `N8N_USER`           | `UID:GID` the container runs as (see Notes for perms)   |
+| `N8N_PORT`           | Host port mapped to the container's `5678`              |
+| `TZ`                 | Timezone (also used as `GENERIC_TIMEZONE`)              |
+| `N8N_HOST`           | Public hostname n8n serves on                           |
+| `N8N_PROTOCOL`       | `http` or `https` (used for URLs and cookies)           |
+| `N8N_SECURE_COOKIE`  | `true` when serving over HTTPS, `false` otherwise       |
+| `N8N_ENCRYPTION_KEY` | Secret used to encrypt stored credentials               |
+| `N8N_BACKUPS_PATH`   | Host path bind-mounted at `/backups` (see Notes)        |
 
 ## Networks
 
-Connects to `dokploy-network` (external, managed by Dokploy).
+No network is declared in the compose file — Dokploy
+attaches its own network automatically on deploy.
 
 ## Volumes
 
@@ -51,7 +52,7 @@ Connects to `dokploy-network` (external, managed by Dokploy).
   the OS, not via a Docker volume, using an fstab line with
   `x-systemd.automount,nofail`, e.g.:
 
-  ```
+  ```text
   <nas-host>:/<export-path> /mnt/backups-n8n nfs \
     defaults,nofail,x-systemd.automount,_netdev,vers=4.1 0 0
   ```
