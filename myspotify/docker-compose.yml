@@ -64,7 +64,7 @@ services:
     security_opt:
       - no-new-privileges:true
     healthcheck:
-      test: wget --spider --quiet http://localhost:3000 || exit 1
+      test: wget --spider --quiet http://127.0.0.1:3000 || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
