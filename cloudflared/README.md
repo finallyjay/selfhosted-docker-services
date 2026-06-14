@@ -8,6 +8,11 @@ This service creates the shared `cloudflare-exposed` bridge
 network. Any service that needs external access must join
 this network.
 
+The tunnel also attaches to the `dokploy-network` so it can
+reach services that are only published on that network
+(those that don't declare `cloudflare-exposed`). Dokploy
+provides `dokploy-network` automatically on deploy.
+
 ## How It Works
 
 1. The `cloudflared` container establishes a tunnel
