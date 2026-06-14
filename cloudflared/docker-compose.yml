@@ -10,12 +10,6 @@ services:
       - 1.1.1.1
       - 1.0.0.1
     dns_search: .
-    healthcheck:
-      test: cloudflared tunnel --no-autoupdate info --output json || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
     networks:
       - cloudflare-exposed
       - dokploy-network
