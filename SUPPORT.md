@@ -13,7 +13,7 @@ following resources:
 - **New service requests:** [Open an issue][service] using
   the new service template.
 - **Security vulnerabilities:** Do not open a public issue.
-  See [SECURITY.md](SECURITY.md) for how to report
+  See the [security policy][security-policy] for how to report
   privately.
 
 [bug]: https://github.com/finallyjay/selfhosted-docker-services/issues/new?template=bug-report.yml
@@ -23,3 +23,5 @@ following resources:
 
 Issues with upstream container images (e.g., Plex, Pi-hole)
 should be reported to their respective projects, not here.
+
+[security-policy]: https://github.com/finallyjay/selfhosted-docker-services/security/policy
