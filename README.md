@@ -1,7 +1,7 @@
 # Self-Hosted Docker Services
 
-![License](https://img.shields.io/github/license/finallyjay/selfhosted-docker-services)
-![GitHub last commit](https://img.shields.io/github/last-commit/finallyjay/selfhosted-docker-services)
+[![CI](https://github.com/finallyjay/selfhosted-docker-services/actions/workflows/lint-markdown.yml/badge.svg)](https://github.com/finallyjay/selfhosted-docker-services/actions/workflows/lint-markdown.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A collection of self-hosted services running as independent
 Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
