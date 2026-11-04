@@ -12,7 +12,7 @@ services:
       - no-new-privileges:true
     dns:
       - 1.1.1.1
-      - 1.1.0.0
+      - 1.0.0.1
     healthcheck:
       test: dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
       interval: 30s
@@ -25,8 +25,8 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     volumes:
-      - ${PIHOLE_DATA}/etc/pihole:/etc/pihole
-      - ${PIHOLE_DATA}/etc/dnsmasq.d:/etc/dnsmasq.d
+      - pihole-etc:/etc/pihole
+      - pihole-dnsmasq:/etc/dnsmasq.d
     environment:
       TZ: "Europe/Madrid"
       FTLCONF_dns_listeningMode: all
@@ -43,6 +43,10 @@ services:
       - homepage.icon=pi-hole.png
       - homepage.href=https://${PIHOLE_LOCAL_DOMAIN}
       - homepage.description=DNS and ad blocking
+
+volumes:
+  pihole-etc:
+  pihole-dnsmasq:
 
 networks:
   cloudflare-exposed:
