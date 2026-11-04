@@ -22,6 +22,7 @@ Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 | [Speedtest](speedtest/) | Internet speed tracking |
 | [Traccar](traccar/) | GPS tracking server |
 | [Watchtower](watchtower/) | Automatic container updates |
+| [WGDashboard](wgdashboard/) | WireGuard VPN server and dashboard |
 
 ## Prerequisites
 
