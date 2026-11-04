@@ -12,8 +12,10 @@ Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 | --- | --- |
 | [ArchiSteamFarm](archisteamfarm/) | Steam account management |
 | [Cloudflared](cloudflared/) | Cloudflare Tunnel |
+| [Garage](garage/) | S3-compatible storage for backups |
 | [Homepage](homepage/) | Dashboard and service portal |
 | [MySpotify](myspotify/) | Spotify listening statistics |
+| [n8n](n8n/) | Workflow automation |
 | [Pi-hole](pihole/) | DNS and ad blocking |
 | [Plex](plex/) | Media server |
 | [Speedtest](speedtest/) | Internet speed tracking |
