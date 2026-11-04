@@ -15,7 +15,7 @@ services:
     networks:
       - cloudflare-exposed
     volumes:
-      - ${SPEEDTEST_DATA}/speedtest/config:/config
+      - speedtest-config:/config
     environment:
       - PUID=1000
       - PGID=1000
@@ -43,6 +43,9 @@ services:
       - homepage.description=Internet speed monitoring
       - homepage.widget.type=speedtest
       - homepage.widget.url=http://speedtest
+
+volumes:
+  speedtest-config:
 
 networks:
   cloudflare-exposed:
