@@ -15,7 +15,10 @@ dashboard for all services.
 
 The whole `.env` is passed to the container with `env_file`, so any
 `HOMEPAGE_VAR_*` variable can be used in the config files as
-`{{HOMEPAGE_VAR_NAME}}`. Keep API keys there instead of in the YAML files.
+`{{HOMEPAGE_VAR_NAME}}`. Keep widget secrets there instead of in the YAML
+files. Wrap a value in single quotes if it contains `$`
+(for example `HOMEPAGE_VAR_X='ab$cd'`), so Compose does not interpolate it.
+For Pi-hole v6, `key` must be an app password: v5 API tokens do not work.
 For example, a Pi-hole widget in `services.yaml`:
 
 ```yaml
