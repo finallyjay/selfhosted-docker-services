@@ -22,6 +22,13 @@ services:
       N8N_SECURE_COOKIE: ${N8N_SECURE_COOKIE}
       DB_SQLITE_POOL_SIZE: 5
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
+      # Allow the Execute Command node (needed to run git for the GitHub
+      # backups); keep the local file trigger disabled, as by default.
+      NODES_EXCLUDE: '["n8n-nodes-base.localFileTrigger"]'
+      # Nodes that read or write files can only use this scratch folder
+      N8N_RESTRICT_FILE_ACCESS_TO: /tmp/github-bundles
+      # Read-only GitHub token for "git clone --mirror" (optional)
+      GITHUB_BACKUP_TOKEN: ${N8N_GITHUB_BACKUP_TOKEN:-}
     logging:
       driver: json-file
       options:
