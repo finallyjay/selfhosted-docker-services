@@ -8,10 +8,33 @@ services:
     ports:
       - 25002:5013
       - 25003:5023
+    environment:
+      # Configuración por variables de entorno (sin traccar.xml).
+      # Clave de Traccar -> variable: puntos a "_" y en mayúsculas.
+      - CONFIG_USE_ENVIRONMENT_VARIABLES=true
+      # Base de datos (secretos en el entorno de Dokploy)
+      - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
+      - DATABASE_URL=${TRACCAR_DATABASE_URL}
+      - DATABASE_USER=${TRACCAR_DATABASE_USER}
+      - DATABASE_PASSWORD=${TRACCAR_DATABASE_PASSWORD}
+      # Filtros de posiciones
+      - FILTER_ENABLE=true
+      - FILTER_INVALID=true
+      - FILTER_ZERO=true
+      - FILTER_DISTANCE=10
+      - FILTER_DUPLICATE=true
+      - FILTER_FUTURE=86400
+      - COORDINATES_FILTER=true
+      - COORDINATES_MIN_ERROR=1
+      - COORDINATES_MAX_ERROR=10
+      # Protocolos
+      - H02_ACK=true
+      # Notificaciones
+      - NOTIFICATOR_TYPES=web,traccar
+      - NOTIFICATOR_TRACCAR_KEY=${TRACCAR_NOTIFICATOR_KEY}
     volumes:
-      - ${TRACCAR_DATA}/traccar/logs:/opt/traccar/logs
-      - ${TRACCAR_DATA}/traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
-      - ${TRACCAR_DATA}/traccar/data:/opt/traccar/data/:rw
+      - traccar-data:/opt/traccar/data
+      - traccar-logs:/opt/traccar/logs
     logging:
       driver: json-file
       options:
@@ -19,3 +42,7 @@ services:
         max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
+
+volumes:
+  traccar-data:
+  traccar-logs:
