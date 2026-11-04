@@ -12,6 +12,8 @@ services:
       - archisteamfarm-config:/app/config
       - archisteamfarm-plugins:/app/plugins
       - archisteamfarm-logs:/app/logs
+    environment:
+      ASF_CRYPTKEY: ${ARCHISTEAMFARM_CRYPTKEY:?set ARCHISTEAMFARM_CRYPTKEY}
     logging:
       driver: json-file
       options:
