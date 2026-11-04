@@ -9,9 +9,9 @@ services:
       - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${ARCHISTEAMFARM_DATA}/config:/app/config
-      - ${ARCHISTEAMFARM_DATA}/plugins:/app/plugins
-      - ${ARCHISTEAMFARM_DATA}/logs:/app/logs
+      - archisteamfarm-config:/app/config
+      - archisteamfarm-plugins:/app/plugins
+      - archisteamfarm-logs:/app/logs
     logging:
       driver: json-file
       options:
@@ -24,6 +24,11 @@ services:
       - homepage.icon=archisteamfarm.png
       - homepage.href=https://${ARCHISTEAMFARM_LOCAL_DOMAIN}
       - homepage.description=Steam card farming and account management
+
+volumes:
+  archisteamfarm-config:
+  archisteamfarm-plugins:
+  archisteamfarm-logs:
 
 networks:
   cloudflare-exposed:
