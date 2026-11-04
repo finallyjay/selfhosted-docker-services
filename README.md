@@ -10,6 +10,7 @@ Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 
 | Service | Description |
 | --- | --- |
+| [Apprise](apprise/) | Notification gateway |
 | [ArchiSteamFarm](archisteamfarm/) | Steam account management |
 | [Cloudflared](cloudflared/) | Cloudflare Tunnel |
 | [Garage](garage/) | S3-compatible storage for backups |
