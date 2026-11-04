@@ -9,7 +9,9 @@ services:
     ports:
       - "${N8N_PORT}:5678"
     volumes:
-      - ${N8N_DATA}/data:/data
+      - n8n-data:/data
+      # n8n regenerates its UI cache on start: keep it out of the data volume
+      - n8n-cache:/data/.cache
       - type: bind
         source: ${N8N_BACKUPS_PATH}
         target: /backups
@@ -34,3 +36,7 @@ services:
         max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
+
+volumes:
+  n8n-data:
+  n8n-cache:
