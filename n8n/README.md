@@ -6,14 +6,15 @@ should send them to object storage such as S3 instead of the local disk.
 
 ## Environment Variables
 
-| Variable             | Description                                           |
-|----------------------|-------------------------------------------------------|
-| `N8N_PORT`           | Host port mapped to the container's `5678`            |
-| `TZ`                 | Timezone (also used as `GENERIC_TIMEZONE`)            |
-| `N8N_HOST`           | Hostname n8n serves on                                |
-| `N8N_PROTOCOL`       | `http` or `https` (used for URLs and cookies)         |
-| `N8N_SECURE_COOKIE`  | `true` when serving over HTTPS, `false` otherwise     |
-| `N8N_ENCRYPTION_KEY` | Secret used to encrypt stored credentials             |
+| Variable                  | Description                                       |
+|---------------------------|---------------------------------------------------|
+| `N8N_PORT`                | Host port mapped to the container's `5678`        |
+| `TZ`                      | Timezone (also used as `GENERIC_TIMEZONE`)        |
+| `N8N_HOST`                | Hostname n8n serves on                            |
+| `N8N_PROTOCOL`            | `http` or `https` (used for URLs and cookies)     |
+| `N8N_SECURE_COOKIE`       | `true` when serving over HTTPS, `false` otherwise |
+| `N8N_ENCRYPTION_KEY`      | Secret used to encrypt stored credentials         |
+| `N8N_GITHUB_BACKUP_TOKEN` | Optional read-only GitHub token for repo backups  |
 
 ## Networks
 
@@ -41,3 +42,10 @@ name (for example `<project>_n8n-data`).
   `http` / `false`.
 - Generate `N8N_ENCRYPTION_KEY` once and keep it stable — rotating it
   makes existing stored credentials unreadable.
+- The Execute Command node is enabled (`NODES_EXCLUDE` only keeps the
+  local file trigger disabled), so workflows can run `git`. Any workflow
+  can then run commands inside the container and read its environment,
+  including `GITHUB_BACKUP_TOKEN`: keep that token read-only and keep
+  n8n off the internet.
+- Nodes that read or write files are limited to `/tmp/github-bundles`
+  (`N8N_RESTRICT_FILE_ACCESS_TO`), outside the data volume.
