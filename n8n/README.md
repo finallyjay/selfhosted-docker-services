@@ -17,7 +17,6 @@ differing only in their environment variables:
 
 | Variable             | Description                                             |
 |----------------------|---------------------------------------------------------|
-| `N8N_DATA`           | Local path for persistent n8n data (mounted at `/data`) |
 | `N8N_USER`           | `UID:GID` the container runs as (see Notes for perms)   |
 | `N8N_PORT`           | Host port mapped to the container's `5678`              |
 | `TZ`                 | Timezone (also used as `GENERIC_TIMEZONE`)              |
@@ -34,16 +33,23 @@ attaches its own network automatically on deploy.
 
 ## Volumes
 
-- `${N8N_DATA}/data` → `/data` (bind mount, holds n8n's
-  SQLite DB and configuration; `HOME` is set to `/data`).
-- `${N8N_BACKUPS_PATH}` → `/backups` (bind mount with
-  `rslave` propagation, so an on-demand NFS automount that
-  appears on the host *after* the container starts is still
-  visible inside it).
+| Volume / path         | Mount          | Contents                                        | Backup |
+|-----------------------|----------------|-------------------------------------------------|--------|
+| `n8n-data`            | `/data`        | SQLite database, workflows history, credentials | Yes    |
+| `n8n-cache`           | `/data/.cache` | UI cache, regenerated on start                  | No     |
+| `${N8N_BACKUPS_PATH}` | `/backups`     | Files written by workflows (bind mount)         | No     |
+
+`n8n-data` and `n8n-cache` are named Docker volumes, so `n8n-data` can be
+backed up with Dokploy volume backups. With Docker Compose the real names
+are prefixed with the project name (for example `<project>_n8n-data`).
+
+`/backups` is a bind mount with `rslave` propagation, so an on-demand NFS
+automount that appears on the host *after* the container starts is still
+visible inside it.
 
 ## Notes
 
-- `${N8N_DATA}/data` on the host must be owned by the same
+- The `n8n-data` volume must be owned by the same
   `UID:GID` set in `N8N_USER`, otherwise n8n will fail to
   write its database. The backups folder must also be
   writable by that UID (match `N8N_USER` to the owner of
