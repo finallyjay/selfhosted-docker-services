@@ -1,0 +1,33 @@
+services:
+  wgdashboard:
+    image: ghcr.io/wgdashboard/wgdashboard:latest
+    container_name: wgdashboard
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${WGDASHBOARD_UI_PORT}:10086/tcp"
+      - "${WGDASHBOARD_WG_PORT}:51820/udp"
+    volumes:
+      - wgdashboard-conf:/etc/wireguard
+      - wgdashboard-data:/data
+      - wgdashboard-aconf:/etc/amnezia/amneziawg
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - homepage.group=Network
+      - homepage.name=WGDashboard
+      - homepage.icon=wireguard.png
+      - homepage.href=https://${WGDASHBOARD_LOCAL_DOMAIN}
+      - homepage.description=WireGuard VPN server and dashboard
+
+volumes:
+  wgdashboard-conf:
+  wgdashboard-data:
+  wgdashboard-aconf:
