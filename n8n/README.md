@@ -8,7 +8,6 @@ should send them to object storage such as S3 instead of the local disk.
 
 | Variable             | Description                                           |
 |----------------------|-------------------------------------------------------|
-| `N8N_USER`           | `UID:GID` the container runs as (see Notes)           |
 | `N8N_PORT`           | Host port mapped to the container's `5678`            |
 | `TZ`                 | Timezone (also used as `GENERIC_TIMEZONE`)            |
 | `N8N_HOST`           | Hostname n8n serves on                                |
@@ -34,8 +33,9 @@ name (for example `<project>_n8n-data`).
 
 ## Notes
 
-- The `n8n-data` volume must be owned by the same `UID:GID` set in
-  `N8N_USER`, otherwise n8n will fail to write its database.
+- Runs as the image's default `node` user (UID 1000). The `n8n-data`
+  volume must be owned by `1000:1000`, otherwise n8n will fail to write
+  its database.
 - Set `N8N_PROTOCOL=https` and `N8N_SECURE_COOKIE=true` only when a
   reverse proxy terminates TLS in front of n8n; for plain HTTP use
   `http` / `false`.
