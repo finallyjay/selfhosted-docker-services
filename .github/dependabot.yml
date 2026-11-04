@@ -16,3 +16,20 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  # Garage only publishes exact version tags, so Watchtower cannot update
+  # it. Propose 2.x bumps here; major versions need a manual migration.
+  - package-ecosystem: "docker-compose"
+    directory: "/garage"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Madrid"
+    ignore:
+      - dependency-name: "dxflrs/garage"
+        update-types:
+          - "version-update:semver-major"

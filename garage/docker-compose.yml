@@ -1,0 +1,56 @@
+services:
+  garage:
+    image: dxflrs/garage:v2.5.0
+    container_name: garage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    ports:
+      # S3 API only on the given address (e.g. the host's Tailscale IP)
+      - "${GARAGE_S3_BIND_ADDRESS:?set GARAGE_S3_BIND_ADDRESS}:3900:3900"
+    volumes:
+      - ${GARAGE_META_DATA:?set GARAGE_META_DATA}:/var/lib/garage/meta
+      - ${GARAGE_DATA:?set GARAGE_DATA}:/var/lib/garage/data
+      - ${GARAGE_SNAPSHOTS_DATA:?set GARAGE_SNAPSHOTS_DATA}:/var/lib/garage/snapshots
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET:?set GARAGE_RPC_SECRET}
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN:?set GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN:?set GARAGE_METRICS_TOKEN}
+    configs:
+      - source: garage-toml
+        target: /etc/garage.toml
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+configs:
+  # Secrets are not in this file: Garage reads them from the
+  # GARAGE_RPC_SECRET, GARAGE_ADMIN_TOKEN and GARAGE_METRICS_TOKEN variables.
+  garage-toml:
+    content: |
+      # Single node. Metadata on a local disk, data on a NAS mount.
+      metadata_dir = "/var/lib/garage/meta"
+      data_dir = "/var/lib/garage/data"
+      metadata_snapshots_dir = "/var/lib/garage/snapshots"
+      metadata_auto_snapshot_interval = "6h"
+      db_engine = "lmdb"
+      metadata_fsync = true
+      data_fsync = true
+      replication_factor = 1
+      compression_level = 1
+
+      rpc_bind_addr = "[::]:3901"
+      rpc_public_addr = "127.0.0.1:3901"
+
+      [s3_api]
+      s3_region = "garage"
+      api_bind_addr = "[::]:3900"
+
+      [admin]
+      api_bind_addr = "[::]:3903"
