@@ -1,0 +1,32 @@
+services:
+  apprise:
+    image: caronc/apprise:latest
+    container_name: apprise
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - apprise-config:/config
+      - apprise-plugin:/plugin
+      - apprise-attach:/attach
+    environment:
+      APPRISE_STATEFUL_MODE: simple
+      APPRISE_WORKER_COUNT: "1"
+      APPRISE_ADMIN: "y"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - homepage.group=Automation
+      - homepage.name=Apprise
+      - homepage.icon=apprise.png
+      - homepage.href=https://${APPRISE_LOCAL_DOMAIN}
+      - homepage.description=Notification gateway
+
+volumes:
+  apprise-config:
+  apprise-plugin:
+  apprise-attach:
