@@ -19,6 +19,7 @@ Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 | [n8n](n8n/) | Workflow automation |
 | [Pi-hole](pihole/) | DNS and ad blocking |
 | [Plex](plex/) | Media server |
+| [qBittorrent](qbittorrent/) | Torrent client |
 | [Speedtest](speedtest/) | Internet speed tracking |
 | [Traccar](traccar/) | GPS tracking server |
 | [Watchtower](watchtower/) | Automatic container updates |
