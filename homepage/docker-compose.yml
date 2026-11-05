@@ -15,8 +15,7 @@ services:
       - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${HOMEPAGE_DATA}/config:/app/config
+      - homepage-config:/app/config
     # Passes HOMEPAGE_VAR_* secrets (widget API keys) to the container, so
     # config files can use {{HOMEPAGE_VAR_NAME}} instead of literal keys
     env_file:
@@ -24,6 +23,8 @@ services:
         required: false
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
+      # Log to Docker instead of /app/config/logs, so logs stay out of the volume
+      LOG_TARGETS: stdout
       PUID: 1000
       PGID: 1000
     logging:
@@ -33,6 +34,9 @@ services:
         max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
+
+volumes:
+  homepage-config:
 
 networks:
   cloudflare-exposed:

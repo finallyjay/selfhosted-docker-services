@@ -7,7 +7,6 @@ dashboard for all services.
 
 | Variable                 | Description                                       |
 |--------------------------|---------------------------------------------------|
-| `HOMEPAGE_DATA`          | Local path for configuration files                |
 | `HOMEPAGE_ALLOWED_HOSTS` | Allowed hostnames for access                      |
 | `HOMEPAGE_VAR_*`         | Secrets for widgets (API keys, tokens), see below |
 
@@ -28,6 +27,38 @@ widget:
   version: 6
   key: "{{HOMEPAGE_VAR_PIHOLE_MAIN_KEY}}"
 ```
+
+## Volumes
+
+| Volume            | Mount         | Contents                                         | Backup |
+|-------------------|---------------|--------------------------------------------------|--------|
+| `homepage-config` | `/app/config` | YAML config (services, widgets, bookmarks, etc.) | Yes    |
+
+Named Docker volume, so it can be backed up with Dokploy volume backups.
+With Docker Compose the real name is prefixed with the project name
+(for example `<project>_homepage-config`). Logs go to stdout
+(`LOG_TARGETS=stdout`), not into the volume.
+
+The Docker socket is not mounted: services are listed explicitly in
+`services.yaml` instead of being discovered from container labels.
+
+## Upgrading from the bind mount
+
+Earlier versions stored the config in `${HOMEPAGE_DATA}/config` and
+discovered services through the Docker socket. Before the first deploy
+with the named volume:
+
+1. Copy the old config into the volume, without the `logs` folder:
+
+   ```sh
+   docker volume create <project>_homepage-config
+   cd "${HOMEPAGE_DATA}/config" && tar --exclude=./logs -cf - . \
+     | docker run --rm -i -v <project>_homepage-config:/dst alpine tar -xf - -C /dst
+   ```
+
+2. Add every service that came from `homepage.*` container labels to
+   `services.yaml`, and remove the socket-based server from `docker.yaml`.
+   Without the socket, label-discovered services no longer appear.
 
 ## Networks
 
