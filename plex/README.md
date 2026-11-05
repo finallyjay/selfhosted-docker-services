@@ -27,10 +27,10 @@ the backup so its databases stay consistent.
 ## Notes
 
 - Media folders are mounted read-only.
-- Hardware transcoding needs the host GPU. If the host exposes `/dev/dri`,
-  add it to the service:
-
-  ```yaml
-  devices:
-    - /dev/dri:/dev/dri
-  ```
+- Hardware transcoding (Plex Pass) uses the host Intel GPU through
+  `/dev/dri`, which is passed to the container. The host must expose
+  `/dev/dri/renderD128`: on the Intel N150 this needs a kernel that
+  supports its iGPU (the Ubuntu 24.04 HWE 7.0 kernel; 6.8 does not).
+  The linuxserver image adds the Plex user to the device's group on start.
+  Enable it in Plex under *Settings → Transcoder → Use hardware
+  acceleration when available*.
