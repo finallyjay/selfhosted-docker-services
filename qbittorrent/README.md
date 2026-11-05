@@ -23,6 +23,7 @@ the NAS when complete; seeding then reads from the NAS.
 | `qbittorrent-media`              | `/media`      | Media library (NFS volume)                     | No     |
 | `qbittorrent-downloads`          | `/downloads`  | General downloads (NFS volume)                 | No     |
 | `${QBITTORRENT_INCOMPLETE_DATA}` | `/incomplete` | Downloads in progress (local disk)             | No     |
+| `qbittorrent-vuetorrent`         | `/vuetorrent` | VueTorrent web UI, read-only                   | No     |
 
 ## Ports
 
@@ -54,3 +55,23 @@ the NAS when complete; seeding then reads from the NAS.
   - *Categories*: one per destination, each with its save path under
     `/media` or `/downloads` (e.g. movies, series, music, general).
   - *Connection*: the listening port is `QBITTORRENT_PEER_PORT`.
+  - *Web UI*: to use VueTorrent, enable **"Use alternative WebUI"** with
+    the path `/vuetorrent/current`. Unticking it brings back the stock UI.
+
+## VueTorrent
+
+[VueTorrent](https://github.com/VueTorrent/VueTorrent) is an alternative,
+mobile-friendly web UI. The one-shot `vuetorrent` service installs a pinned
+release before qBittorrent starts:
+
+- it downloads `vuetorrent.zip` of `VUETORRENT_VERSION`, checks it against
+  `VUETORRENT_SHA256`, extracts it to `/vuetorrent/<version>` and points
+  `/vuetorrent/current` at it;
+- it does nothing when that version is already installed;
+- qBittorrent mounts the volume read-only.
+
+It is third-party code with full control of the client, so it is pinned
+rather than auto-updated. To update, set both values in
+`docker-compose.yml` from the new release (the SHA-256 is shown next to
+`vuetorrent.zip` on its GitHub release page, or `sha256sum vuetorrent.zip`)
+and redeploy. Older version folders stay in the volume (about 11 MB each).
