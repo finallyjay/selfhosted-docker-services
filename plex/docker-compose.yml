@@ -4,6 +4,8 @@ services:
     container_name: plex
     hostname: tuckfow-home
     restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
     security_opt:
       - no-new-privileges:true
     healthcheck:
