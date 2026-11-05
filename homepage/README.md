@@ -42,6 +42,24 @@ With Docker Compose the real name is prefixed with the project name
 The Docker socket is not mounted: services are listed explicitly in
 `services.yaml` instead of being discovered from container labels.
 
+## Upgrading from the bind mount
+
+Earlier versions stored the config in `${HOMEPAGE_DATA}/config` and
+discovered services through the Docker socket. Before the first deploy
+with the named volume:
+
+1. Copy the old config into the volume, without the `logs` folder:
+
+   ```sh
+   docker volume create <project>_homepage-config
+   cd "${HOMEPAGE_DATA}/config" && tar --exclude=./logs -cf - . \
+     | docker run --rm -i -v <project>_homepage-config:/dst alpine tar -xf - -C /dst
+   ```
+
+2. Add every service that came from `homepage.*` container labels to
+   `services.yaml`, and remove the socket-based server from `docker.yaml`.
+   Without the socket, label-discovered services no longer appear.
+
 ## Networks
 
 Connects to `cloudflare-exposed`
