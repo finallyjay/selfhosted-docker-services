@@ -48,6 +48,10 @@ services:
       - cloudflare-exposed
     volumes:
       - ${MYSPOTIFY_DATA}/mongo:/data/db
+    environment:
+      # MongoDB 8 refuses to start on kernel >= 6.19 unless it is 7.0.14+;
+      # Ubuntu HWE reports 7.0.0-N, so it is rejected. See README.
+      GLIBC_TUNABLES: glibc.pthread.rseq=1
     logging:
       driver: json-file
       options:
