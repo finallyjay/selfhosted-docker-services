@@ -20,8 +20,8 @@ services:
       - "${QBITTORRENT_PEER_PORT}:${QBITTORRENT_PEER_PORT}/udp"
     volumes:
       - qbittorrent-config:/config
-      - ${QBITTORRENT_MEDIA_DATA}:/media
-      - ${QBITTORRENT_DOWNLOADS_DATA}:/downloads
+      - qbittorrent-media:/media
+      - qbittorrent-downloads:/downloads
       - ${QBITTORRENT_INCOMPLETE_DATA}:/incomplete
     environment:
       - PUID=1000
@@ -43,3 +43,18 @@ services:
 
 volumes:
   qbittorrent-config:
+  # NFS volumes mounted by Docker itself, not host paths: if the NAS is not
+  # reachable the container does not start, instead of silently writing
+  # downloads to empty local folders.
+  qbittorrent-media:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=${QBITTORRENT_NAS_ADDRESS},nfsvers=4.1,rw,hard
+      device: :${QBITTORRENT_MEDIA_EXPORT}
+  qbittorrent-downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=${QBITTORRENT_NAS_ADDRESS},nfsvers=4.1,rw,hard
+      device: :${QBITTORRENT_DOWNLOADS_EXPORT}
