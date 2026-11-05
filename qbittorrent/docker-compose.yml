@@ -1,4 +1,35 @@
 services:
+  # One-shot helper: installs a pinned, checksum-verified VueTorrent release
+  # (an alternative web UI) into its own folder of a volume that qBittorrent
+  # mounts read-only, and points /vuetorrent/current at it. To update,
+  # bump both values below; older version folders are left in place.
+  vuetorrent:
+    image: alpine:3.24.3
+    container_name: qbittorrent-vuetorrent
+    restart: "no"
+    command:
+      - sh
+      - -euc
+      - |
+        target="/vuetorrent/$$VUETORRENT_VERSION"
+        if [ ! -f "$$target/.verified" ]; then
+          wget -q -O /tmp/vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/download/v$$VUETORRENT_VERSION/vuetorrent.zip"
+          echo "$$VUETORRENT_SHA256  /tmp/vuetorrent.zip" | sha256sum -c -
+          mkdir -p "$$target"
+          unzip -q -o /tmp/vuetorrent.zip -d /tmp/unpacked
+          cp -a /tmp/unpacked/vuetorrent/. "$$target/"
+          touch "$$target/.verified"
+        fi
+        ln -sfn "$$VUETORRENT_VERSION" /vuetorrent/current
+        echo "VueTorrent $$VUETORRENT_VERSION in place"
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - qbittorrent-vuetorrent:/vuetorrent
+    environment:
+      - VUETORRENT_VERSION=2.36.1
+      - VUETORRENT_SHA256=70b67531f0f3bc36c8bd05d82cc7ba1ee37c71c17f0b6c45f522200e35e66f37
+
   qbittorrent:
     # Pinned on purpose, and not opted in to Watchtower: private trackers
     # blacklist client versions, so only update after checking their lists.
@@ -7,6 +38,9 @@ services:
     container_name: qbittorrent
     hostname: qbittorrent
     restart: unless-stopped
+    depends_on:
+      vuetorrent:
+        condition: service_completed_successfully
     security_opt:
       - no-new-privileges:true
     healthcheck:
@@ -23,6 +57,7 @@ services:
       - qbittorrent-media:/media
       - qbittorrent-downloads:/downloads
       - ${QBITTORRENT_INCOMPLETE_DATA}:/incomplete
+      - qbittorrent-vuetorrent:/vuetorrent:ro
     environment:
       - PUID=1000
       - PGID=1000
@@ -43,6 +78,7 @@ services:
 
 volumes:
   qbittorrent-config:
+  qbittorrent-vuetorrent:
   # NFS volumes mounted by Docker itself, not host paths: if the NAS is not
   # reachable the container does not start, instead of silently writing
   # downloads to empty local folders.
