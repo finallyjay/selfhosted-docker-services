@@ -1,0 +1,60 @@
+services:
+  qbittorrent:
+    # Pinned on purpose, and not opted in to Watchtower: private trackers
+    # blacklist client versions, so only update after checking their lists.
+    # libtorrent v1 because the data lives on the NAS over NFS (see README).
+    image: linuxserver/qbittorrent:5.2.3-libtorrentv1
+    container_name: qbittorrent
+    hostname: qbittorrent
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: curl -fsS -o /dev/null http://localhost:8080 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    ports:
+      - "${QBITTORRENT_PEER_PORT}:${QBITTORRENT_PEER_PORT}/tcp"
+      - "${QBITTORRENT_PEER_PORT}:${QBITTORRENT_PEER_PORT}/udp"
+    volumes:
+      - qbittorrent-config:/config
+      - qbittorrent-media:/media
+      - qbittorrent-downloads:/downloads
+      - ${QBITTORRENT_INCOMPLETE_DATA}:/incomplete
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=${QBITTORRENT_PEER_PORT}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - homepage.group=Media
+      - homepage.name=qBittorrent
+      - homepage.icon=qbittorrent.png
+      - homepage.href=https://${QBITTORRENT_LOCAL_DOMAIN}
+      - homepage.description=Torrent client
+
+volumes:
+  qbittorrent-config:
+  # NFS volumes mounted by Docker itself, not host paths: if the NAS is not
+  # reachable the container does not start, instead of silently writing
+  # downloads to empty local folders.
+  qbittorrent-media:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=${QBITTORRENT_NAS_ADDRESS},nfsvers=4.1,rw,hard
+      device: :${QBITTORRENT_MEDIA_EXPORT}
+  qbittorrent-downloads:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=${QBITTORRENT_NAS_ADDRESS},nfsvers=4.1,rw,hard
+      device: :${QBITTORRENT_DOWNLOADS_EXPORT}
