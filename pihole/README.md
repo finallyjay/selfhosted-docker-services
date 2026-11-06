@@ -30,3 +30,9 @@ nebula-sync).
 
 Connects to `cloudflare-exposed`
 (must be created by the `cloudflared` service first).
+
+## Updates
+
+Watchtower updates the `pihole` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `pihole/**`
+change on `main`.

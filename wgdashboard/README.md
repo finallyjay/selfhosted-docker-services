@@ -34,3 +34,9 @@ keys, so treat it and its backups as secrets.
 
 Declares no network. Needs the `NET_ADMIN` capability to manage the
 WireGuard interface.
+
+## Updates
+
+Watchtower updates the `wgdashboard` container automatically, following
+the `latest` tag. Dokploy redeploys the stack when files under
+`wgdashboard/**` change on `main`.

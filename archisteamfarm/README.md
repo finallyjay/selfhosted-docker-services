@@ -38,3 +38,9 @@ With Docker Compose the real names are prefixed with the project name
 
 Connects to `cloudflare-exposed`
 (must be created by the `cloudflared` service first).
+
+## Updates
+
+Watchtower updates the `archisteamfarm` container automatically,
+following the `latest` tag. Dokploy redeploys the stack when files under
+`archisteamfarm/**` change on `main`.

@@ -30,3 +30,9 @@ Connects to `cloudflare-exposed`
 (must be created by the `cloudflared` service first).
 
 [speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
+
+## Updates
+
+Watchtower updates the `speedtest` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `speedtest/**`
+change on `main`.

@@ -49,3 +49,9 @@ name (for example `<project>_n8n-data`).
   n8n off the internet.
 - Nodes that read or write files are limited to `/tmp/github-bundles`
   (`N8N_RESTRICT_FILE_ACCESS_TO`), outside the data volume.
+
+## Updates
+
+Watchtower updates the `n8n` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `n8n/**`
+change on `main`.

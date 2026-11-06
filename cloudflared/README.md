@@ -55,3 +55,10 @@ networks:
 [tunnel-docs]: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/
 [zero-trust]: https://one.dash.cloudflare.com/
 [cloudflared-repo]: https://github.com/cloudflare/cloudflared
+
+## Updates
+
+Watchtower updates the `cloudflare-tunnel` container automatically,
+following the `latest` tag. Dokploy redeploys the stack when files under
+`cloudflared/**` change on `main`. While the tunnel restarts, every
+service exposed through it is briefly unreachable.

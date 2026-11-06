@@ -75,3 +75,11 @@ rather than auto-updated. To update, set both values in
 `docker-compose.yml` from the new release (the SHA-256 is shown next to
 `vuetorrent.zip` on its GitHub release page, or `sha256sum vuetorrent.zip`)
 and redeploy. Older version folders stay in the volume (about 11 MB each).
+
+## Updates
+
+Not updated automatically: the qBittorrent image, the `alpine` helper and
+VueTorrent are all pinned, and none of them is opted in to Watchtower or
+Dependabot. Bump them by hand (see *Pinned version* and *VueTorrent*
+above). Dokploy redeploys the stack when files under `qbittorrent/**`
+change on `main`.
