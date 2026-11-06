@@ -7,6 +7,7 @@ organizing and streaming movies, TV shows and music.
 
 | Variable            | Description                                        |
 |---------------------|----------------------------------------------------|
+| `PLEX_HOSTNAME`     | Container hostname (default Plex server name)      |
 | `PLEX_MOUNTED_DATA` | Host path where the media folders are mounted      |
 | `PLEX_LOCAL_IP`     | Local IP of the server running Plex                |
 | `PLEX_CLAIM`        | Optional claim token, only for the first setup     |

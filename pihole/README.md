@@ -8,6 +8,7 @@ and `SYS_NICE` capabilities for DNS/DHCP operations.
 
 | Variable              | Description                            |
 |-----------------------|----------------------------------------|
+| `PIHOLE_HOSTNAME`     | Container hostname                     |
 | `PIHOLE_WEB_PASSWORD` | Password for the web admin interface   |
 | `PIHOLE_LOCAL_DOMAIN` | Domain to access the web interface     |
 
