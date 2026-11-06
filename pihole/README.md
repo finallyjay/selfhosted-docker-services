@@ -27,11 +27,6 @@ No volume backup on purpose: most of the space is the query log
 Teleporter or replicated to a second Pi-hole (for example with
 nebula-sync).
 
-## Networks
-
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
-
 ## Updates
 
 Watchtower updates the `pihole` container automatically, following the

@@ -11,8 +11,6 @@ services:
       start_period: 30s
     security_opt:
       - no-new-privileges:true
-    networks:
-      - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - homepage-config:/app/config
@@ -37,7 +35,3 @@ services:
 
 volumes:
   homepage-config:
-
-networks:
-  cloudflare-exposed:
-    external: true

@@ -60,11 +60,6 @@ with the named volume:
    `services.yaml`, and remove the socket-based server from `docker.yaml`.
    Without the socket, label-discovered services no longer appear.
 
-## Networks
-
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
-
 ## Updates
 
 Watchtower updates the `homepage` container automatically, following the

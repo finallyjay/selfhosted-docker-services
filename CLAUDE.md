@@ -27,14 +27,13 @@ exactly.
 
 ## Architecture
 
-**Network model:** A single Cloudflare Tunnel
-(`cloudflared/`) creates and owns the `cloudflare-exposed`
-external bridge network. Services that need internet
-exposure declare and connect to this network. Services
-that don't need Cloudflare exposure should **not** declare
-any network in their compose file — Dokploy attaches its
-own `dokploy-network` automatically on deploy (e.g. `n8n`,
-`plex`, `traccar`, `watchtower`).
+**Network model:** Services don't declare networks for
+exposure. Dokploy attaches its own `dokploy-network`
+automatically on deploy, and Traefik routes from there. The
+Cloudflare Tunnel (`cloudflared/`) sends every public
+hostname to `http://dokploy-traefik`. What is exposed is
+decided by the tunnel's hostnames, the Dokploy domains and
+Cloudflare Access, not by Docker networks.
 
 **Container management:** Watchtower handles automatic
 image updates using label-based opt-in

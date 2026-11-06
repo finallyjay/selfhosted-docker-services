@@ -24,11 +24,6 @@ Named Docker volume, so it can be backed up with Dokploy volume backups.
 With Docker Compose the real name is prefixed with the project name
 (for example `<project>_speedtest-config`).
 
-## Networks
-
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
-
 [speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
 
 ## Updates

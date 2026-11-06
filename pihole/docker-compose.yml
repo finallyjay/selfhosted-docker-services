@@ -19,8 +19,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - cloudflare-exposed
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -47,7 +45,3 @@ services:
 volumes:
   pihole-etc:
   pihole-dnsmasq:
-
-networks:
-  cloudflare-exposed:
-    external: true

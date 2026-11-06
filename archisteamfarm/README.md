@@ -34,11 +34,6 @@ Named Docker volumes, so they can be backed up with Dokploy volume backups.
 With Docker Compose the real names are prefixed with the project name
 (for example `<project>_archisteamfarm-config`).
 
-## Networks
-
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
-
 ## Updates
 
 Watchtower updates the `archisteamfarm` container automatically,
