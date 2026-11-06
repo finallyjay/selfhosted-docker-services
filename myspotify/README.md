@@ -30,6 +30,29 @@ The stack does not back itself up. Configure a Dokploy compose
 backup for the `myspotify-mongo` service (database `your_spotify`,
 type MongoDB, with the root credentials above) and test a restore.
 
+## Restoring a backup
+
+Dokploy's built-in restore does not work for MongoDB: it runs
+`mongorestore --db <name> --archive`, which current MongoDB tools
+reject with `invalid db name`. Restore the backup file by hand:
+
+1. Download the backup (`.bson.gz`) from the S3 destination.
+2. Stop the API so nothing writes during the restore:
+   `docker stop myspotify-api`
+3. Restore it with the root user from the container environment:
+
+   ```sh
+   docker exec -i myspotify-mongo sh -c 'mongorestore \
+     -u "$MONGO_INITDB_ROOT_USERNAME" -p "$MONGO_INITDB_ROOT_PASSWORD" \
+     --authenticationDatabase admin --archive --gzip --drop \
+     --nsInclude "your_spotify.*"' < backup.bson.gz
+   ```
+
+4. Start the API again: `docker start myspotify-api`
+
+The file has the same format as `mongodump --archive --gzip`, so
+the same command restores a manual dump.
+
 ## Migrating from the host-path version
 
 Earlier versions stored MongoDB in `${MYSPOTIFY_DATA}/mongo`
@@ -40,9 +63,8 @@ migrated automatically.
    `docker exec myspotify-mongo mongodump -d your_spotify --archive --gzip > your_spotify.archive.gz`
 2. Deploy this version, so MongoDB creates the root user in the
    new volume.
-3. Restore the dump into the new database (Dokploy restore, or
-   `mongorestore --archive --gzip --drop` with the root
-   credentials) before using the app.
+3. Restore the dump into the new database before using the app,
+   as described in [Restoring a backup](#restoring-a-backup).
 
 ## Networks
 
