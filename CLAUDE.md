@@ -28,8 +28,9 @@ exactly.
 ## Architecture
 
 **Network model:** Services don't declare networks for
-exposure. Dokploy attaches its own `dokploy-network`
-automatically on deploy, and Traefik routes from there. The
+exposure. Dokploy attaches its own `dokploy-network` on
+deploy to every service that has a domain, and Traefik routes
+from there. The
 Cloudflare Tunnel (`cloudflared/`) sends every public
 hostname to `http://dokploy-traefik`. What is exposed is
 decided by the tunnel's hostnames, the Dokploy domains and

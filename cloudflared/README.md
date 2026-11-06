@@ -33,13 +33,20 @@ A service is exposed by configuration, not by Docker
 networks:
 
 1. Add the domain to the service in Dokploy.
-2. Add the hostname to the tunnel, pointing to
+2. Unless it must be public, create its Cloudflare Access
+   application first, so the hostname is never reachable
+   without it.
+3. Add the hostname to the tunnel, pointing to
    `http://dokploy-traefik`.
-3. Protect it with a Cloudflare Access application
-   unless it must be public.
 
 No network needs to be declared in the service's compose
 file.
+
+Traefik's ports 80 and 443 must not be reachable from the
+internet. Otherwise a client could send a protected hostname
+straight to Traefik and skip Cloudflare Access. On
+tuckfow-cloud-01 the Hetzner firewall blocks them. At home
+the router forwards no ports to the server.
 
 ## Useful Resources
 

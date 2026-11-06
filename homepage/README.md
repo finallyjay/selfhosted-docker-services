@@ -60,6 +60,13 @@ with the named volume:
    `services.yaml`, and remove the socket-based server from `docker.yaml`.
    Without the socket, label-discovered services no longer appear.
 
+## Networks
+
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
+Homepage reaches the Pi-hole and Speedtest widgets by container name
+(`http://pihole`, `http://speedtest`) over that network.
+
 ## Updates
 
 Watchtower updates the `homepage` container automatically, following the

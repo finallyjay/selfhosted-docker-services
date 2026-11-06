@@ -34,6 +34,11 @@ Named Docker volumes, so they can be backed up with Dokploy volume backups.
 With Docker Compose the real names are prefixed with the project name
 (for example `<project>_archisteamfarm-config`).
 
+## Networks
+
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
+
 ## Updates
 
 Watchtower updates the `archisteamfarm` container automatically,
