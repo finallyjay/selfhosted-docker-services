@@ -46,17 +46,28 @@ name (for example `<project>_n8n-data`).
   makes existing stored credentials unreadable.
 - `N8N_NODES_EXCLUDE` unset keeps n8n's defaults: Execute Command and
   Local File Trigger disabled. Use that for an instance reachable from
-  the internet (e.g. one that only serves public webhooks).
+  the internet (e.g. one that only serves public webhooks), and create
+  its owner account over a private connection before exposing it.
 - Setting `N8N_NODES_EXCLUDE=["n8n-nodes-base.localFileTrigger"]`
   enables Execute Command, so workflows can run `git` for the GitHub
   backups. Any workflow can then run commands inside the container and
   read its environment, including `GITHUB_BACKUP_TOKEN`: keep that
   token read-only and keep that instance off the internet.
 - The same compose can serve several instances with different
-  environments (for example an internal one and a public webhook one).
-- Moving an existing instance into this compose: `N8N_ENCRYPTION_KEY`
-  must be the `encryptionKey` from its current `.n8n/config`, and its
-  `.n8n` folder must be copied into the `n8n-data` volume as `/data/.n8n`.
+  environments (for example an internal one and a public webhook one),
+  each on its own Docker host: `container_name` is fixed to `n8n`.
+- Moving an existing SQLite instance into this compose:
+  1. Stop the source instance and keep it stopped during the copy.
+  2. Copy its `.n8n` folder into the `n8n-data` volume as `/data/.n8n`,
+     owned by `1000:1000`.
+  3. Set `N8N_ENCRYPTION_KEY` to the `encryptionKey` from its
+     `.n8n/config`.
+  4. Keep the same public hostname and `N8N_WEBHOOK_URL`, so webhook
+     senders need no change; trigger a test webhook afterwards.
+
+  Instances backed by PostgreSQL keep workflows and credentials in the
+  database: move them with `n8n export:entities` / `import:entities`
+  instead.
 - Nodes that read or write files are limited to `/tmp/github-bundles`
   (`N8N_RESTRICT_FILE_ACCESS_TO`), outside the data volume.
 
