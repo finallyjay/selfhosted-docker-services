@@ -20,6 +20,12 @@ screaming snake case (`coordinates.minError` -> `COORDINATES_MIN_ERROR`).
 Non-secret settings live in the compose file; secrets come from the
 environment.
 
+Do not set `COORDINATES_MAX_ERROR`. In Traccar 6.16+ it snaps every
+position farther than that distance from the last stored one back onto
+it, valid fixes included. Combined with `FILTER_DISTANCE`, that drops
+every position and the device stays frozen in place. Use
+`FILTER_MAX_SPEED` to reject GPS jumps instead.
+
 ## Volumes
 
 | Volume         | Mount               | Contents  | Backup |

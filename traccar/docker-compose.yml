@@ -25,8 +25,10 @@ services:
       - FILTER_DUPLICATE=true
       - FILTER_FUTURE=86400
       - COORDINATES_FILTER=true
-      - COORDINATES_MIN_ERROR=1
-      - COORDINATES_MAX_ERROR=10
+      - COORDINATES_MIN_ERROR=10
+      - FILTER_MAX_SPEED=135
+      - FILTER_SKIP_LIMIT=300
+      - FILTER_SKIP_ATTRIBUTES=ignition,alarm
       # Protocolos
       - H02_ACK=true
       # Notificaciones
