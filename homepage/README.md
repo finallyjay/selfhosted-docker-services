@@ -64,3 +64,9 @@ with the named volume:
 
 Connects to `cloudflare-exposed`
 (must be created by the `cloudflared` service first).
+
+## Updates
+
+Watchtower updates the `homepage` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `homepage/**`
+change on `main`.

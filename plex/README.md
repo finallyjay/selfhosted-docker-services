@@ -34,3 +34,9 @@ the backup so its databases stay consistent.
   The linuxserver image adds the Plex user to the device's group on start.
   Enable it in Plex under *Settings → Transcoder → Use hardware
   acceleration when available*.
+
+## Updates
+
+Watchtower updates the `plex` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `plex/**`
+change on `main`.

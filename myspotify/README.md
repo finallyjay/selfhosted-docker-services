@@ -97,3 +97,12 @@ Moving to `mongo:7` is not a simple retag: 7.0 cannot open 8.x
 data files, and `mongodump`/`mongorestore` only supports
 restoring into the same major version or FCV. Export the data
 with `mongoexport`/`mongoimport` instead.
+
+## Updates
+
+Watchtower updates all three containers automatically: the backend and
+frontend follow `latest`, and `myspotify-mongo` follows `8`, so it stays
+within MongoDB 8. A new MongoDB major is a manual change to the image tag
+and needs a dump and restore (see the kernel workaround notes above).
+Dokploy redeploys the stack when files under `myspotify/**` change on
+`main`.

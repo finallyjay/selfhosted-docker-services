@@ -24,6 +24,8 @@ Sends notifications via Telegram.
 
 ## Updates
 
-Watchtower updates itself too: its own container has the opt-in label.
-Services pinned to an exact version (for example Garage) are updated
-through Dependabot pull requests instead.
+Watchtower updates itself too, following the `latest` tag: its own
+container has the opt-in label. Services pinned to an exact version
+(for example Garage) are updated through Dependabot pull requests
+instead. Dokploy redeploys the stack when files under `watchtower/**`
+change on `main`.

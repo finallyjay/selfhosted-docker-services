@@ -41,3 +41,9 @@ The API and the admin UI have no authentication of their own. Keep the
 service off the internet and, if the local network is not trusted, put
 an authentication layer in front of it (for example a reverse proxy
 with basic auth).
+
+## Updates
+
+Watchtower updates the `apprise` container automatically, following the
+`latest` tag. Dokploy redeploys the stack when files under `apprise/**`
+change on `main`.

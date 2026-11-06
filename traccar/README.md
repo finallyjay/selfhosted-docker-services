@@ -38,3 +38,9 @@ attaches its own network automatically on deploy.
 
 - Default ports: `25002` (mapped to 5013) and
   `25003` (mapped to 5023).
+
+## Updates
+
+Watchtower updates the `traccar` container automatically, following the
+`latest` tag. The MariaDB database is not part of this stack. Dokploy
+redeploys the stack when files under `traccar/**` change on `main`.

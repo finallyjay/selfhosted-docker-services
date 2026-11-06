@@ -1,0 +1,62 @@
+name: Validate Compose
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check the 3-file convention
+        run: |
+          status=0
+          for dir in */; do
+            dir="${dir%/}"
+            files="$(ls -A "$dir" | LC_ALL=C sort | tr '\n' ' ')"
+            if [ "$files" != ".env.example README.md docker-compose.yml " ]; then
+              echo "::error file=$dir::$dir must contain exactly docker-compose.yml, .env.example and README.md (found: $files)"
+              status=1
+            fi
+          done
+          exit "$status"
+
+  compose-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate every docker-compose.yml
+        run: |
+          # Dokploy attaches dokploy-network on deploy, so declare it as an
+          # external network for validation only.
+          override="$RUNNER_TEMP/networks.override.yml"
+          printf 'networks:\n  dokploy-network:\n    external: true\n' > "$override"
+
+          status=0
+          for file in */docker-compose.yml; do
+            dir="$(dirname "$file")"
+            # Secrets left empty in .env.example on purpose would fail
+            # ${VAR:?msg}; give them a dummy value for validation only.
+            env_file="$RUNNER_TEMP/$dir.env"
+            sed -E 's/^([A-Za-z_][A-Za-z0-9_]*)=$/\1=ci-placeholder/' \
+              "$dir/.env.example" > "$env_file"
+            echo "::group::$file"
+            if docker compose -f "$file" -f "$override" \
+              --env-file "$env_file" config -q; then
+              echo "OK"
+            else
+              echo "::error file=$file::docker compose config failed"
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$status"

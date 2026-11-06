@@ -58,4 +58,5 @@ docker exec garage /garage bucket allow --read --write backups --key backups-key
 Garage publishes only exact version tags (no `latest` or `v2`), so
 Watchtower cannot update it. Dependabot opens a pull request for each
 new 2.x release instead; major versions need a manual migration and are
-ignored.
+ignored. Dokploy redeploys the stack when files under `garage/**`
+change on `main`, so merging a Dependabot bump rolls it out.
