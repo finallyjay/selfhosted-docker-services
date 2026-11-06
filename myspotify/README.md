@@ -7,18 +7,35 @@ and frontend client.
 
 ## Environment Variables
 
-| Variable                   | Description                       |
-|----------------------------|-----------------------------------|
-| `MYSPOTIFY_DATA`           | Local path for database storage   |
-| `MYSPOTIFY_DOMAIN`         | Domain to access the web interface|
-| `MYSPOTIFY_BACKEND_DOMAIN` | Domain for the backend API        |
-| `MYSPOTIFY_APP_PUBLIC`     | Spotify application public key    |
-| `MYSPOTIFY_APP_SECRET`     | Spotify application secret key    |
+| Variable                   | Description                        |
+|----------------------------|------------------------------------|
+| `MYSPOTIFY_DOMAIN`         | Domain to access the web interface |
+| `MYSPOTIFY_BACKEND_DOMAIN` | Domain for the backend API         |
+| `MYSPOTIFY_APP_PUBLIC`     | Spotify application public key     |
+| `MYSPOTIFY_APP_SECRET`     | Spotify application secret key     |
+| `MYSPOTIFY_MONGO_USER`     | MongoDB root user                  |
+| `MYSPOTIFY_MONGO_PASSWORD` | MongoDB root password (URL-safe)   |
+
+MongoDB creates the root user only on its first start, with an
+empty volume. Changing these variables later does not change the
+user; update it inside MongoDB as well.
+
+## Volumes
+
+| Volume                 | Mount      | Contents         | Backup |
+|------------------------|------------|------------------|--------|
+| `myspotify-mongo-data` | `/data/db` | MongoDB database | Yes    |
+
+The database is backed up with a Dokploy database backup
+(`mongodump` of `your_spotify`), which needs the root
+credentials above.
 
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
+No network is declared in the compose file — Dokploy
+attaches its own network automatically on deploy.
+The web interface (port 3000) and the API (port 8080) are
+published through Dokploy domains.
 
 ## Kernel 7.0 workaround (MongoDB)
 
