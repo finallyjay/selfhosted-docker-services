@@ -20,11 +20,14 @@ services:
       N8N_PORT: 5678
       N8N_PROTOCOL: ${N8N_PROTOCOL}
       N8N_SECURE_COOKIE: ${N8N_SECURE_COOKIE}
+      # Public base URL for webhooks (without it n8n appends :5678)
+      WEBHOOK_URL: ${N8N_WEBHOOK_URL:?N8N_WEBHOOK_URL is required}
       DB_SQLITE_POOL_SIZE: 5
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "true"
-      # Allow the Execute Command node (needed to run git for the GitHub
-      # backups); keep the local file trigger disabled, as by default.
-      NODES_EXCLUDE: '["n8n-nodes-base.localFileTrigger"]'
+      # Nodes disabled on this instance. Default: n8n's own defaults
+      # (Execute Command and Local File Trigger). An instance that runs git
+      # for the GitHub backups sets '["n8n-nodes-base.localFileTrigger"]'.
+      NODES_EXCLUDE: ${N8N_NODES_EXCLUDE:-["n8n-nodes-base.executeCommand","n8n-nodes-base.localFileTrigger"]}
       # Nodes that read or write files can only use this scratch folder
       N8N_RESTRICT_FILE_ACCESS_TO: /tmp/github-bundles
       # Read-only GitHub token for "git clone --mirror" (optional)
