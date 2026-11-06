@@ -8,22 +8,25 @@ Docker Compose stacks, deployed via [Dokploy](https://dokploy.com).
 
 ## Services
 
-| Service | Description |
-| --- | --- |
-| [Apprise](apprise/) | Notification gateway |
-| [ArchiSteamFarm](archisteamfarm/) | Steam account management |
-| [Cloudflared](cloudflared/) | Cloudflare Tunnel |
-| [Garage](garage/) | S3-compatible storage for backups |
-| [Homepage](homepage/) | Dashboard and service portal |
-| [MySpotify](myspotify/) | Spotify listening statistics |
-| [n8n](n8n/) | Workflow automation |
-| [Pi-hole](pihole/) | DNS and ad blocking |
-| [Plex](plex/) | Media server |
-| [qBittorrent](qbittorrent/) | Torrent client |
-| [Speedtest](speedtest/) | Internet speed tracking |
-| [Traccar](traccar/) | GPS tracking server |
-| [Watchtower](watchtower/) | Automatic container updates |
-| [WGDashboard](wgdashboard/) | WireGuard VPN server and dashboard |
+| Service                           | Description                        | Backup                               |
+|-----------------------------------|------------------------------------|--------------------------------------|
+| [Apprise](apprise/)               | Notification gateway               | Daily (config volume)                |
+| [ArchiSteamFarm](archisteamfarm/) | Steam account management           | Daily (config and plugins volumes)   |
+| [Cloudflared](cloudflared/)       | Cloudflare Tunnel                  | Not needed (stateless)               |
+| [Garage](garage/)                 | S3-compatible storage for backups  | No (it is the backup target)         |
+| [Homepage](homepage/)             | Dashboard and service portal       | Daily (config volume)                |
+| [MySpotify](myspotify/)           | Spotify listening statistics       | Daily (MongoDB dump)                 |
+| [n8n](n8n/)                       | Workflow automation                | Daily (data volume)                  |
+| [Pi-hole](pihole/)                | DNS and ad blocking                | No (by choice)                       |
+| [Plex](plex/)                     | Media server                       | Weekly (config volume)               |
+| [qBittorrent](qbittorrent/)       | Torrent client                     | Daily (config volume)                |
+| [Speedtest](speedtest/)           | Internet speed tracking            | Daily (config volume)                |
+| [Traccar](traccar/)               | GPS tracking server                | Daily (database, managed separately) |
+| [Watchtower](watchtower/)         | Automatic container updates        | Not needed (stateless)               |
+| [WGDashboard](wgdashboard/)       | WireGuard VPN server and dashboard | Daily (data and config volumes)      |
+
+Backups are Dokploy backups to S3-compatible storage, configured outside
+this repository.
 
 ## Prerequisites
 
