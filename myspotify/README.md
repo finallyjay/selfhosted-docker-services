@@ -22,13 +22,27 @@ user; update it inside MongoDB as well.
 
 ## Volumes
 
-| Volume                 | Mount      | Contents         | Backup |
-|------------------------|------------|------------------|--------|
-| `myspotify-mongo-data` | `/data/db` | MongoDB database | Yes    |
+| Volume                 | Mount      | Contents         | Backup  |
+|------------------------|------------|------------------|---------|
+| `myspotify-mongo-data` | `/data/db` | MongoDB database | Dokploy |
 
-The database is backed up with a Dokploy database backup
-(`mongodump` of `your_spotify`), which needs the root
-credentials above.
+The stack does not back itself up. Configure a Dokploy compose
+backup for the `myspotify-mongo` service (database `your_spotify`,
+type MongoDB, with the root credentials above) and test a restore.
+
+## Migrating from the host-path version
+
+Earlier versions stored MongoDB in `${MYSPOTIFY_DATA}/mongo`
+without authentication. The new volume starts empty; nothing is
+migrated automatically.
+
+1. Stop the old stack and dump the old database:
+   `docker exec myspotify-mongo mongodump -d your_spotify --archive --gzip > your_spotify.archive.gz`
+2. Deploy this version, so MongoDB creates the root user in the
+   new volume.
+3. Restore the dump into the new database (Dokploy restore, or
+   `mongorestore --archive --gzip --drop` with the root
+   credentials) before using the app.
 
 ## Networks
 
