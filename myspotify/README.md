@@ -7,18 +7,49 @@ and frontend client.
 
 ## Environment Variables
 
-| Variable                   | Description                       |
-|----------------------------|-----------------------------------|
-| `MYSPOTIFY_DATA`           | Local path for database storage   |
-| `MYSPOTIFY_DOMAIN`         | Domain to access the web interface|
-| `MYSPOTIFY_BACKEND_DOMAIN` | Domain for the backend API        |
-| `MYSPOTIFY_APP_PUBLIC`     | Spotify application public key    |
-| `MYSPOTIFY_APP_SECRET`     | Spotify application secret key    |
+| Variable                   | Description                        |
+|----------------------------|------------------------------------|
+| `MYSPOTIFY_DOMAIN`         | Domain to access the web interface |
+| `MYSPOTIFY_BACKEND_DOMAIN` | Domain for the backend API         |
+| `MYSPOTIFY_APP_PUBLIC`     | Spotify application public key     |
+| `MYSPOTIFY_APP_SECRET`     | Spotify application secret key     |
+| `MYSPOTIFY_MONGO_USER`     | MongoDB root user                  |
+| `MYSPOTIFY_MONGO_PASSWORD` | MongoDB root password (URL-safe)   |
+
+MongoDB creates the root user only on its first start, with an
+empty volume. Changing these variables later does not change the
+user; update it inside MongoDB as well.
+
+## Volumes
+
+| Volume                 | Mount      | Contents         | Backup  |
+|------------------------|------------|------------------|---------|
+| `myspotify-mongo-data` | `/data/db` | MongoDB database | Dokploy |
+
+The stack does not back itself up. Configure a Dokploy compose
+backup for the `myspotify-mongo` service (database `your_spotify`,
+type MongoDB, with the root credentials above) and test a restore.
+
+## Migrating from the host-path version
+
+Earlier versions stored MongoDB in `${MYSPOTIFY_DATA}/mongo`
+without authentication. The new volume starts empty; nothing is
+migrated automatically.
+
+1. Stop the old stack and dump the old database:
+   `docker exec myspotify-mongo mongodump -d your_spotify --archive --gzip > your_spotify.archive.gz`
+2. Deploy this version, so MongoDB creates the root user in the
+   new volume.
+3. Restore the dump into the new database (Dokploy restore, or
+   `mongorestore --archive --gzip --drop` with the root
+   credentials) before using the app.
 
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
+No network is declared in the compose file — Dokploy
+attaches its own network automatically on deploy.
+The web interface (port 3000) and the API (port 8080) are
+published through Dokploy domains.
 
 ## Kernel 7.0 workaround (MongoDB)
 

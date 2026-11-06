@@ -15,12 +15,10 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - cloudflare-exposed
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
       CLIENT_ENDPOINT: https://${MYSPOTIFY_DOMAIN}
-      MONGO_ENDPOINT: mongodb://myspotify-mongo:27017/your_spotify
+      MONGO_ENDPOINT: mongodb://${MYSPOTIFY_MONGO_USER:?MYSPOTIFY_MONGO_USER is required}:${MYSPOTIFY_MONGO_PASSWORD:?MYSPOTIFY_MONGO_PASSWORD is required}@myspotify-mongo:27017/your_spotify?authSource=admin
       SPOTIFY_PUBLIC: ${MYSPOTIFY_APP_PUBLIC}
       SPOTIFY_SECRET: ${MYSPOTIFY_APP_SECRET}
     logging:
@@ -44,11 +42,11 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - cloudflare-exposed
     volumes:
-      - ${MYSPOTIFY_DATA}/mongo:/data/db
+      - myspotify-mongo-data:/data/db
     environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MYSPOTIFY_MONGO_USER:?MYSPOTIFY_MONGO_USER is required}
+      MONGO_INITDB_ROOT_PASSWORD: ${MYSPOTIFY_MONGO_PASSWORD:?MYSPOTIFY_MONGO_PASSWORD is required}
       # MongoDB 8 refuses to start on kernel >= 6.19 unless it is 7.0.14+;
       # Ubuntu HWE reports 7.0.0-N, so it is rejected. See README.
       GLIBC_TUNABLES: glibc.pthread.rseq=1
@@ -73,8 +71,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - cloudflare-exposed
     environment:
       API_ENDPOINT: https://${MYSPOTIFY_BACKEND_DOMAIN}
     logging:
@@ -84,12 +80,6 @@ services:
         max-file: "3"
     labels:
       - com.centurylinklabs.watchtower.enable=true
-      - homepage.group=Media
-      - homepage.name=My Spotify
-      - homepage.icon=spotify.png
-      - homepage.href=https://${MYSPOTIFY_DOMAIN}
-      - homepage.description=Spotify listening history and stats
 
-networks:
-  cloudflare-exposed:
-    external: true
+volumes:
+  myspotify-mongo-data:
