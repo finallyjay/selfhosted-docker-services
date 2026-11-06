@@ -2,7 +2,7 @@ services:
   pihole:
     image: pihole/pihole:latest
     container_name: pihole
-    hostname: tuckfow-home
+    hostname: ${PIHOLE_HOSTNAME:?PIHOLE_HOSTNAME is required}
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
