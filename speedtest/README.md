@@ -24,12 +24,15 @@ Named Docker volume, so it can be backed up with Dokploy volume backups.
 With Docker Compose the real name is prefixed with the project name
 (for example `<project>_speedtest-config`).
 
+[speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
+
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
-
-[speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
+Keep a Dokploy domain on this service: without one, Dokploy does not
+attach `dokploy-network` and the Homepage widget (`http://speedtest`)
+can no longer reach it.
 
 ## Updates
 

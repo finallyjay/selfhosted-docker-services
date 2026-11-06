@@ -29,8 +29,11 @@ nebula-sync).
 
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
+Keep a Dokploy domain on this service: without one, Dokploy does not
+attach `dokploy-network` and the Homepage widget (`http://pihole`)
+can no longer reach it.
 
 ## Updates
 

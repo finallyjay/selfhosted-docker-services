@@ -4,25 +4,22 @@ Runs a [Cloudflare Tunnel][tunnel-docs] to securely expose
 internal Docker services to the internet without opening
 ports on the host.
 
-This service creates the shared `cloudflare-exposed` bridge
-network. Any service that needs external access must join
-this network.
-
-The tunnel also attaches to the `dokploy-network` so it can
-reach services that are only published on that network
-(those that don't declare `cloudflare-exposed`). Dokploy
-provides `dokploy-network` automatically on deploy.
+The tunnel joins `dokploy-network`, which Dokploy provides
+automatically on deploy, and sends every public hostname to
+Traefik (`http://dokploy-traefik`). Traefik then routes the
+request using the domain configured in Dokploy.
 
 ## How It Works
 
 1. The `cloudflared` container establishes a tunnel
    using your Cloudflare token.
-2. The `cloudflare-exposed` Docker network is created
-   and shared across services.
-3. Services attached to this network become reachable
-   through Cloudflare.
-4. Routes and access policies are managed in the
-   [Cloudflare Zero Trust dashboard][zero-trust].
+2. Each public hostname is added to the tunnel in the
+   [Cloudflare Zero Trust dashboard][zero-trust], pointing
+   to `http://dokploy-traefik`.
+3. Traefik forwards the request to the service that has
+   that domain in Dokploy (HTTPS off, certificate None:
+   Cloudflare terminates TLS).
+4. Access policies are managed in Cloudflare Zero Trust.
 
 ## Environment Variables
 
@@ -30,22 +27,26 @@ provides `dokploy-network` automatically on deploy.
 |--------------------------|----------------------------------------|
 | `CLOUDFLARE_TUNNEL_TOKEN`| Tunnel token from Cloudflare Zero Trust|
 
-## Connecting a Service
+## Exposing a Service
 
-Add the `cloudflare-exposed` network to any service
-you want to expose:
-
-```yaml
-services:
-  my-service:
-    image: example/my-service:latest
-    networks:
-      - cloudflare-exposed
-
+A service is exposed by configuration, not by Docker
 networks:
-  cloudflare-exposed:
-    external: true
-```
+
+1. Add the domain to the service in Dokploy.
+2. Unless it must be public, create its Cloudflare Access
+   application first, so the hostname is never reachable
+   without it.
+3. Add the hostname to the tunnel, pointing to
+   `http://dokploy-traefik`.
+
+No network needs to be declared in the service's compose
+file.
+
+Traefik's ports 80 and 443 must not be reachable from the
+internet. Otherwise a client could send a protected hostname
+straight to Traefik and skip Cloudflare Access. On
+tuckfow-cloud-01 the Hetzner firewall blocks them. At home
+the router forwards no ports to the server.
 
 ## Useful Resources
 
