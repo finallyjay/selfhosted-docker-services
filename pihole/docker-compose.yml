@@ -25,6 +25,7 @@ services:
     volumes:
       - pihole-etc:/etc/pihole
       - pihole-dnsmasq:/etc/dnsmasq.d
+      - pihole-backup:/backup
     environment:
       TZ: "Europe/Madrid"
       FTLCONF_dns_listeningMode: all
@@ -45,3 +46,4 @@ services:
 volumes:
   pihole-etc:
   pihole-dnsmasq:
+  pihole-backup:
