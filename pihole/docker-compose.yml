@@ -19,14 +19,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - cloudflare-exposed
     ports:
       - "53:53/tcp"
       - "53:53/udp"
     volumes:
       - pihole-etc:/etc/pihole
       - pihole-dnsmasq:/etc/dnsmasq.d
+      - pihole-backup:/backup
     environment:
       TZ: "Europe/Madrid"
       FTLCONF_dns_listeningMode: all
@@ -47,7 +46,4 @@ services:
 volumes:
   pihole-etc:
   pihole-dnsmasq:
-
-networks:
-  cloudflare-exposed:
-    external: true
+  pihole-backup:

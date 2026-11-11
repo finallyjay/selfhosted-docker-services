@@ -62,8 +62,10 @@ with the named volume:
 
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
+Homepage reaches the Pi-hole and Speedtest widgets by container name
+(`http://pihole`, `http://speedtest`) over that network.
 
 ## Updates
 

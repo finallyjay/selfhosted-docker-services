@@ -36,8 +36,8 @@ With Docker Compose the real names are prefixed with the project name
 
 ## Networks
 
-Connects to `cloudflare-exposed`
-(must be created by the `cloudflared` service first).
+Declares no networks. Dokploy attaches `dokploy-network` on deploy
+because the service has a domain; Traefik reaches it there.
 
 ## Updates
 

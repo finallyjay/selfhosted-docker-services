@@ -41,8 +41,7 @@ this repository.
 4. Run `docker compose up -d`.
 
 > Each service is self-contained. You can deploy them independently
-> in any order, except that **cloudflared** should be running first
-> if the service connects to the `cloudflare-exposed` network.
+> in any order.
 
 ## Deployment via Dokploy
 

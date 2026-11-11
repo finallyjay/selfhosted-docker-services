@@ -5,8 +5,6 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    networks:
-      - cloudflare-exposed
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - archisteamfarm-config:/app/config
@@ -31,7 +29,3 @@ volumes:
   archisteamfarm-config:
   archisteamfarm-plugins:
   archisteamfarm-logs:
-
-networks:
-  cloudflare-exposed:
-    external: true
