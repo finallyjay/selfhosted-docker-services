@@ -74,9 +74,9 @@ Home Assistant has no built-in MQTT broker — the `mosquitto/` service provides
 it. Once Mosquitto is up:
 
 1. Settings → Devices & Services → Add Integration → **MQTT**.
-2. Broker: the **host's LAN IP**, port `1883` (the published Mosquitto port).
-   Use the host IP rather than a container name — HA and Mosquitto don't share
-   a user-defined Docker network.
+2. Broker: the **host's LAN IP**, port `MOSQUITTO_PORT` (default `1883`, the
+   published Mosquitto port). Use the host IP rather than a container name — HA
+   and Mosquitto don't share a user-defined Docker network.
 3. Username / password: the Mosquitto credentials (`MOSQUITTO_USERNAME` /
    `MOSQUITTO_PASSWORD`).
 
