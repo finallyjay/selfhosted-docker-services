@@ -13,6 +13,10 @@ services:
       - -c
       - |
         set -e
+        # Recreate the password file on every start. "mosquitto_passwd -c" refuses
+        # to overwrite an existing file, so a plain container restart (e.g. after
+        # a reboot) would otherwise fail and loop.
+        rm -f /mosquitto/config/passwd
         mosquitto_passwd -b -c /mosquitto/config/passwd "$$MOSQUITTO_USERNAME" "$$MOSQUITTO_PASSWORD"
         printf 'listener 1883\nallow_anonymous false\npassword_file /mosquitto/config/passwd\npersistence true\npersistence_location /mosquitto/data/\nlog_dest stdout\n' > /mosquitto/config/mosquitto.conf
         # mosquitto drops privileges to the mosquitto user; it must own the files
