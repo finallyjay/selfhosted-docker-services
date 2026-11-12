@@ -1,0 +1,47 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    restart: unless-stopped
+    # The repo enforces a 3-file layout per service, so the config and the
+    # password file can't be committed. Generate both at startup from the
+    # credentials in the environment, then hand off to mosquitto.
+    # "$$VAR" survives compose interpolation and is expanded by the container
+    # shell at runtime.
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        mosquitto_passwd -b -c /mosquitto/config/passwd "$$MOSQUITTO_USERNAME" "$$MOSQUITTO_PASSWORD"
+        printf 'listener 1883\nallow_anonymous false\npassword_file /mosquitto/config/passwd\npersistence true\npersistence_location /mosquitto/data/\nlog_dest stdout\n' > /mosquitto/config/mosquitto.conf
+        # mosquitto drops privileges to the mosquitto user; it must own the files
+        # it reads (passwd is 0600, created by root) so reloads keep working.
+        chown mosquitto:mosquitto /mosquitto/config/passwd /mosquitto/config/mosquitto.conf
+        exec mosquitto -c /mosquitto/config/mosquitto.conf
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -h 127.0.0.1 -p 1883 -u \"$$MOSQUITTO_USERNAME\" -P \"$$MOSQUITTO_PASSWORD\" -t '$$SYS/broker/version' -C 1 -W 3 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    ports:
+      - "${MOSQUITTO_PORT}:1883"
+    volumes:
+      - mosquitto-data:/mosquitto/data
+    environment:
+      MOSQUITTO_USERNAME: ${MOSQUITTO_USERNAME}
+      MOSQUITTO_PASSWORD: ${MOSQUITTO_PASSWORD:?MOSQUITTO_PASSWORD is required}
+      TZ: ${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+volumes:
+  mosquitto-data:
