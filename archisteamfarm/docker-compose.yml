@@ -27,5 +27,8 @@ services:
 
 volumes:
   archisteamfarm-config:
+    name: archisteamfarm-config
   archisteamfarm-plugins:
+    name: archisteamfarm-plugins
   archisteamfarm-logs:
+    name: archisteamfarm-logs
