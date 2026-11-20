@@ -21,8 +21,8 @@ Supports Telegram notifications.
 | `speedtest-config` | `/config` | SQLite database, app keys and logs | Yes    |
 
 Named Docker volume, so it can be backed up with Dokploy volume backups.
-With Docker Compose the real name is prefixed with the project name
-(for example `<project>_speedtest-config`).
+It has a fixed `name:`, so the real Docker volume is `speedtest-config`
+and does not take the Dokploy project name as a prefix.
 
 [speedtest-tracker]: https://github.com/alexjustesen/speedtest-tracker
 
