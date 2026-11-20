@@ -45,7 +45,7 @@ the NAS when complete; seeding then reads from the NAS.
   of silently writing downloads to empty local folders. Both exports must be
   read-write for this host (squash to a user that can write them). Plex keeps
   mounting the media library read-only. If the export or address changes,
-  remove the volume (`docker volume rm <project>_qbittorrent-media`) so
+  remove the volume (`docker volume rm qbittorrent-media`) so
   Docker recreates it with the new options.
 - **First-run settings** (web UI, *Options*):
   - *Downloads*: enable **"Keep incomplete torrents in"** `/incomplete`
