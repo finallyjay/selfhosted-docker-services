@@ -21,9 +21,9 @@ organizing and streaming movies, TV shows and music.
 | `${PLEX_MOUNTED_DATA}` | `/movies`, `/music`… | Media files (read-only bind mounts)                 | No     |
 
 `plex-config` is a named Docker volume, so it can be backed up with Dokploy
-volume backups. With Docker Compose the real name is prefixed with the
-project name (for example `<project>_plex-config`). Plex is stopped during
-the backup so its databases stay consistent.
+volume backups. It has a fixed `name:`, so the real Docker volume keeps
+this name and does not take the Dokploy project name as a prefix. Plex is
+stopped during the backup so its databases stay consistent.
 
 ## Notes
 
