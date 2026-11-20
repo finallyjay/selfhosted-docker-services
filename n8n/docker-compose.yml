@@ -42,4 +42,6 @@ services:
 
 volumes:
   n8n-data:
+    name: n8n-data
   n8n-cache:
+    name: n8n-cache

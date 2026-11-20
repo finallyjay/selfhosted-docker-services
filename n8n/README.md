@@ -31,8 +31,8 @@ attaches its own network automatically on deploy.
 | `n8n-cache` | `/data/.cache` | UI cache, regenerated on start                  | No     |
 
 Named Docker volumes, so `n8n-data` can be backed up with Dokploy volume
-backups. With Docker Compose the real names are prefixed with the project
-name (for example `<project>_n8n-data`).
+backups. They have a fixed `name:`, so the real Docker volumes keep these
+names and do not take the Dokploy project name as a prefix.
 
 ## Notes
 
