@@ -21,6 +21,15 @@ published to the LAN instead.
 Config (including secrets, integrations and automations) lives inside the
 `homeassistant-config` volume, not in env vars — Home Assistant manages it.
 
+## Volumes
+
+| Volume                 | Mount     | Contents                                   | Backup |
+|------------------------|-----------|--------------------------------------------|--------|
+| `homeassistant-config` | `/config` | Configuration, integrations and database   | Yes    |
+
+Named Docker volume with a fixed `name:`, so the real Docker volume keeps
+this name and does not take the Dokploy project name as a prefix.
+
 ## Networks
 
 Bridge only. No network is declared: Dokploy attaches `dokploy-network` on
