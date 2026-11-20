@@ -35,8 +35,8 @@ widget:
 | `homepage-config` | `/app/config` | YAML config (services, widgets, bookmarks, etc.) | Yes    |
 
 Named Docker volume, so it can be backed up with Dokploy volume backups.
-With Docker Compose the real name is prefixed with the project name
-(for example `<project>_homepage-config`). Logs go to stdout
+It has a fixed `name:`, so the real Docker volume keeps this name
+and does not take the Dokploy project name as a prefix. Logs go to stdout
 (`LOG_TARGETS=stdout`), not into the volume.
 
 The Docker socket is not mounted: services are listed explicitly in
@@ -51,9 +51,9 @@ with the named volume:
 1. Copy the old config into the volume, without the `logs` folder:
 
    ```sh
-   docker volume create <project>_homepage-config
+   docker volume create homepage-config
    cd "${HOMEPAGE_DATA}/config" && tar --exclude=./logs -cf - . \
-     | docker run --rm -i -v <project>_homepage-config:/dst alpine tar -xf - -C /dst
+     | docker run --rm -i -v homepage-config:/dst alpine tar -xf - -C /dst
    ```
 
 2. Add every service that came from `homepage.*` container labels to
