@@ -44,3 +44,4 @@ services:
 
 volumes:
   speedtest-config:
+    name: speedtest-config
