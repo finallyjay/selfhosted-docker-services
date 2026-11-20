@@ -28,5 +28,8 @@ services:
 
 volumes:
   apprise-config:
+    name: apprise-config
   apprise-plugin:
+    name: apprise-plugin
   apprise-attach:
+    name: apprise-attach
