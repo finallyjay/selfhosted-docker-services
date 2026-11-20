@@ -34,11 +34,25 @@ By default, every service should include:
 - Homepage labels for services with a web UI
   (recommended where applicable)
 
+Persistent data goes in named volumes, each with a fixed
+`name:` equal to its key, so Docker does not prefix it
+with the Dokploy project name:
+
+```yaml
+volumes:
+  service-config:
+    name: service-config
+```
+
+If the image declares a `VOLUME` the service does not
+need, mount a tmpfs there so no anonymous volume is
+created.
+
 ### .env.example
 
 - List all required variables with placeholder values.
 - Use `SERVICE_NAME_VARIABLE` naming convention.
-- Data paths should use the `*_DATA` suffix.
+- Host data paths (bind mounts) should use the `*_DATA` suffix.
 - Never include real credentials.
 
 ### README.md
