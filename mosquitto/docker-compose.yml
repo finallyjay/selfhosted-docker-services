@@ -35,6 +35,10 @@ services:
       - "${MOSQUITTO_PORT}:1883"
     volumes:
       - mosquitto-data:/mosquitto/data
+      # The image declares /mosquitto/log as a VOLUME, which would create an
+      # anonymous volume. Logs go to stdout (log_dest), so keep it in memory.
+      - type: tmpfs
+        target: /mosquitto/log
     environment:
       MOSQUITTO_USERNAME: ${MOSQUITTO_USERNAME}
       MOSQUITTO_PASSWORD: ${MOSQUITTO_PASSWORD:?MOSQUITTO_PASSWORD is required}
@@ -49,3 +53,4 @@ services:
 
 volumes:
   mosquitto-data:
+    name: mosquitto-data
