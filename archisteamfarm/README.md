@@ -31,8 +31,8 @@ with the new key, using the ASF commands `encrypt AES <password>` and
 | `archisteamfarm-logs`    | `/app/logs`    | Log files                      | No     |
 
 Named Docker volumes, so they can be backed up with Dokploy volume backups.
-With Docker Compose the real names are prefixed with the project name
-(for example `<project>_archisteamfarm-config`).
+They have a fixed `name:`, so the real Docker volumes keep these
+names and do not take the Dokploy project name as a prefix.
 
 ## Networks
 
