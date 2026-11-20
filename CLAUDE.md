@@ -61,9 +61,26 @@ provides a dashboard via Docker label discovery
   Documents environment variables, networks, and any
   special setup (permissions, dependencies).
 - **Volume mounts:**
-  Persistent data paths are configurable via env vars.
-  Use read-only mounts (`:ro`) where appropriate
+  Prefer named Docker volumes for persistent data, so
+  they can be backed up with Dokploy volume backups.
+  Every named volume gets a fixed `name:` equal to its
+  key (e.g. `pihole-etc:` → `name: pihole-etc`), so the
+  real Docker volume does not take the Dokploy project
+  name as a prefix. If the image declares a `VOLUME` the
+  service does not need, mount a tmpfs there instead of
+  leaving an anonymous volume. Host paths (bind mounts)
+  are configurable via `*_DATA` env vars. Use read-only
+  mounts (`:ro`) where appropriate
   (e.g., `/etc/localtime`).
+- **Renaming an existing volume:** Docker can't rename
+  volumes and merging to `main` redeploys at once, so
+  copy the data before merging: stop the container,
+  create the new volume with the compose labels
+  (`com.docker.compose.project=<Dokploy appName>`,
+  `com.docker.compose.volume=<key>`), copy with
+  `cp -a`, merge, then point the Dokploy volume backup
+  at the new name. Check whether the same compose is
+  deployed on more than one server.
 - **docker-compose property order:**
   All services must follow this order
   (skip properties that don't apply):
