@@ -45,5 +45,8 @@ services:
 
 volumes:
   pihole-etc:
+    name: pihole-etc
   pihole-dnsmasq:
+    name: pihole-dnsmasq
   pihole-backup:
+    name: pihole-backup
