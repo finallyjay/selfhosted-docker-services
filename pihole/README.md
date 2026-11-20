@@ -20,8 +20,8 @@ and `SYS_NICE` capabilities for DNS/DHCP operations.
 | `pihole-dnsmasq` | `/etc/dnsmasq.d` | Extra dnsmasq config files                       | No              |
 | `pihole-backup`  | `/backup`        | Daily Teleporter exports (last 7)                | Yes             |
 
-Named Docker volumes. With Docker Compose the real names are prefixed with
-the project name (for example `<project>_pihole-etc`).
+Named Docker volumes with a fixed `name:`, so the real Docker volumes keep
+these names and do not take the Dokploy project name as a prefix.
 
 ## Backup
 
