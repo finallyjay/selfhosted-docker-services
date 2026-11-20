@@ -32,6 +32,18 @@ regenerates both on every start from the environment:
 This is idempotent: changing the credentials in Dokploy and redeploying
 re-creates the password file.
 
+## Volumes
+
+| Volume / path    | Mount             | Contents                                  | Backup |
+|------------------|-------------------|-------------------------------------------|--------|
+| `mosquitto-data` | `/mosquitto/data` | Persistence (retained messages, sessions) | Yes    |
+| tmpfs            | `/mosquitto/log`  | Empty: logs go to stdout                  | No     |
+
+`mosquitto-data` is a named Docker volume with a fixed `name:`, so the real
+Docker volume keeps this name and does not take the Dokploy project name as
+a prefix. The image declares `/mosquitto/log` as a volume; mounting a tmpfs
+there avoids an anonymous volume.
+
 ## Networks
 
 Bridge only. No network is declared. Nothing on `dokploy-network` needs to
