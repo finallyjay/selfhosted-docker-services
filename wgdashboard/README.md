@@ -24,8 +24,8 @@ from outside. Do not expose the web UI port to the internet.
 | `wgdashboard-aconf` | `/etc/amnezia/amneziawg`  | AmneziaWG config, if used                         | No     |
 
 Named Docker volumes, so they can be backed up with Dokploy volume backups.
-With Docker Compose the real names are prefixed with the project name
-(for example `<project>_wgdashboard-conf`).
+They have a fixed `name:`, so the real Docker volumes keep these
+names and do not take the Dokploy project name as a prefix.
 
 The config volume holds the server private key and the peers' preshared
 keys, so treat it and its backups as secrets.

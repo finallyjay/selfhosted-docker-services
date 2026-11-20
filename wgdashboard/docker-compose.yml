@@ -29,5 +29,8 @@ services:
 
 volumes:
   wgdashboard-conf:
+    name: wgdashboard-conf
   wgdashboard-data:
+    name: wgdashboard-data
   wgdashboard-aconf:
+    name: wgdashboard-aconf
