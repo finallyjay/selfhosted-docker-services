@@ -78,17 +78,21 @@ services:
 
 volumes:
   qbittorrent-config:
+    name: qbittorrent-config
   qbittorrent-vuetorrent:
+    name: qbittorrent-vuetorrent
   # NFS volumes mounted by Docker itself, not host paths: if the NAS is not
   # reachable the container does not start, instead of silently writing
   # downloads to empty local folders.
   qbittorrent-media:
+    name: qbittorrent-media
     driver: local
     driver_opts:
       type: nfs
       o: addr=${QBITTORRENT_NAS_ADDRESS},nfsvers=4.1,rw,hard
       device: :${QBITTORRENT_MEDIA_EXPORT}
   qbittorrent-downloads:
+    name: qbittorrent-downloads
     driver: local
     driver_opts:
       type: nfs
