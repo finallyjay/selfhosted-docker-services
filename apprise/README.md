@@ -24,8 +24,8 @@ browser and are stored under `/config`.
 | `apprise-attach` | `/attach` | Temporary attachments                     | No     |
 
 Named Docker volumes, so they can be backed up with Dokploy volume backups.
-With Docker Compose the real names are prefixed with the project name
-(for example `<project>_apprise-config`).
+They have a fixed `name:`, so the real Docker volumes keep these
+names and do not take the Dokploy project name as a prefix.
 
 The saved configurations contain the tokens of every notification
 target, so treat the config volume and its backups as secrets.
