@@ -22,9 +22,13 @@ user; update it inside MongoDB as well.
 
 ## Volumes
 
-| Volume                 | Mount      | Contents         | Backup  |
-|------------------------|------------|------------------|---------|
-| `myspotify-mongo-data` | `/data/db` | MongoDB database | Dokploy |
+| Volume / path          | Mount            | Contents                        | Backup  |
+|------------------------|------------------|---------------------------------|---------|
+| `myspotify-mongo-data` | `/data/db`       | MongoDB database                | Dokploy |
+| tmpfs                  | `/data/configdb` | Empty: only for sharded setups  | No      |
+
+Named Docker volume with a fixed `name:`, so the real Docker volume keeps
+this name and does not take the Dokploy project name as a prefix.
 
 The stack does not back itself up. Configure a Dokploy compose
 backup for the `myspotify-mongo` service (database `your_spotify`,
