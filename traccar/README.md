@@ -33,6 +33,9 @@ every position and the device stays frozen in place. Use
 | `traccar-data` | `/opt/traccar/data` | App data  | No     |
 | `traccar-logs` | `/opt/traccar/logs` | Log files | No     |
 
+Named Docker volumes with a fixed `name:`, so the real Docker volumes keep
+these names and do not take the Dokploy project name as a prefix.
+
 The positions live in the MariaDB database, which is backed up separately.
 
 ## Networks

@@ -47,4 +47,6 @@ services:
 
 volumes:
   traccar-data:
+    name: traccar-data
   traccar-logs:
+    name: traccar-logs
