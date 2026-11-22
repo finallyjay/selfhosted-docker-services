@@ -44,6 +44,11 @@ services:
       start_period: 30s
     volumes:
       - myspotify-mongo-data:/data/db
+      # The image also declares /data/configdb as a VOLUME (only used by
+      # sharded clusters). Keep it in memory so recreating the container does
+      # not leave an anonymous volume behind every time.
+      - type: tmpfs
+        target: /data/configdb
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MYSPOTIFY_MONGO_USER:?MYSPOTIFY_MONGO_USER is required}
       MONGO_INITDB_ROOT_PASSWORD: ${MYSPOTIFY_MONGO_PASSWORD:?MYSPOTIFY_MONGO_PASSWORD is required}
@@ -83,3 +88,4 @@ services:
 
 volumes:
   myspotify-mongo-data:
+    name: myspotify-mongo-data
